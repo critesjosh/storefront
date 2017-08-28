@@ -18,7 +18,7 @@ contract Storefront {
 	event LogNewAdmin(address address1);
 	event LogRemovedAdmin(address address1);
 	event LogAddProduct(uint id, uint price, uint stock);
-	event LogPurchase(address purchaser, uint id, uint price, uint quantity);
+	event LogPurchase(address purchaser, uint id, uint price, uint quantity, uint stock);
 	event LogPayment(address to, uint amount);
 
 	modifier isOwner {
@@ -91,7 +91,7 @@ contract Storefront {
 		balances[this] += (products[id].price * quantity);
 		products[id].stock -= quantity;
 		msg.sender.transfer(amountToReturn);
-		LogPurchase(msg.sender, id, products[id].price, quantity);
+		LogPurchase(msg.sender, id, products[id].price, quantity, products[id].stock);
 		return true;
 	}
 

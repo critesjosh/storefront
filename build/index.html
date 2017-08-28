@@ -31,16 +31,15 @@
 				<input type="submit" class="btn btn-primary" value="Add Product"/>
 			</form>
 
-			<div class="control-group" ng-repeat="product in formattedProducts">
+			<div class="control-group" ng-repeat="product in formattedProducts track by $index">
 				<div style="border:1px solid grey">
 					<div>Product ID: {{ product.id }}</div>
 					<div>Price: {{ product.price }}</div>
 					<div>Amount in stock: {{ product.stock }}</div>
-					<div class="controls">
-						<input type="text" name="selected" ng-value="{{ product.id }}" data-ng-model="p1.selected" readonly="" required/>
-						<input type="text" name="quantity" data-ng-model="p1.quantity" required />
-						<input type="submit" class="btn btn-success" value="Purchase" ng-click="purchaseProduct()"/>
-					</div>
+					<form class="controls">
+						<input type="text" name="quantity" ng-model="product.quantity" required />
+						<input type="submit" class="btn btn-success" ng-click="purchaseProduct()" value="Purchase"/>
+					</form>
 				</div>
 				<br>
 			</div>
