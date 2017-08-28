@@ -1,0 +1,60 @@
+
+
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<base href="."/>
+<title>Storefront</title>
+<meta charset="utf-8">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+
+<script src="./app.js"></script>
+</head>
+<body ng-cloak ng-controller="storefrontController">
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+
+
+			<form id="addAdminForm" ng-submit="addAdmin()" ng-show="isOwner">
+				<input type="text" name="newAdmin" ng-model="newAdmin" required/>
+				<input type="submit" class="btn btn-primary" value="Add Admin"/>
+			</form>
+
+			<form id="addProdcutForm" ng-submit="addProduct()" ng-show="isAdmin">
+				<input type="text" name="price" ng-model="price" required/>
+				<input type="text" name="stock" ng-model="stock" required/>
+				<input type="submit" class="btn btn-primary" value="Add Product"/>
+			</form>
+
+			<div class="control-group" ng-repeat="product in formattedProducts">
+				<div style="border:1px solid grey">
+					<div>Product ID: {{ product.id }}</div>
+					<div>Price: {{ product.price }}</div>
+					<div>Amount in stock: {{ product.stock }}</div>
+					<div class="controls">
+						<input type="text" name="selected" ng-value="{{ product.id }}" data-ng-model="p1.selected" readonly="" required/>
+						<input type="text" name="quantity" data-ng-model="p1.quantity" required />
+						<input type="submit" class="btn btn-success" value="Purchase" ng-click="purchaseProduct()"/>
+					</div>
+				</div>
+				<br>
+			</div>
+
+		</div>
+	</div>
+</div>
+<script>
+window.addEventListener('load', function(){
+	angular.bootstrap(document, ['storefrontApp']);
+});
+	</script>
+
+</body>
+
+
+</html>
