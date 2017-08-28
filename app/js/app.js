@@ -22,15 +22,11 @@ app.controller("storefrontController",
 				product.price = element.args.price.toString(10);
 				product.stock = element.args.stock.toString(10);
 				product.quantity = 0;
-				product.purchase = function(){
-					console.log("this id:" + product.id);
-				};
 				$scope.formattedProducts.push(product);
 			});
 		}	
 
 		$scope.updateProductData = function(productId, newStockCount){
-			//update the stock information for the purchased product
 			$scope.formattedProducts.forEach(function(element){
 				if(element.id === productId){
 					element.stock = newStockCount;
@@ -94,6 +90,7 @@ app.controller("storefrontController",
 			var amount = product.quantity;
 			product.quantity = 0;
 			if(amount === 0) continue;
+			console.log(amount, product.id);
 			$scope.contract.purchaseProduct(parseInt(product.id), parseInt(amount), {from:$scope.account, value: web3.toWei(totalCost, 'ether')});
 		}
 	}
@@ -101,9 +98,9 @@ app.controller("storefrontController",
 	$scope.addProduct = function() {
 		if(parseInt($scope.price) <= 0) return;
 		if(parseInt($scope.stock) < 0) return;
-		$scope.contract.addProduct(parseInt($scope.price), parseInt($scope.stock), {from:$scope.account})
+		$scope.contract.addProduct(parseInt($scope.price), parseInt($scope.stock), {from:$scope.account, gas: 900000})
 		 .then(function(txn){
-		 	console.log("product added !! txn receipt", txn);
+		 	//console.log("product added !! txn receipt", txn);
 		 });
 	};
 

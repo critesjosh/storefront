@@ -66,16 +66,16 @@ contract Storefront {
 		return true;
 	}
 
-	function addProduct(uint price, uint stock)
+	function addProduct(uint price, uint stock, uint time)
 		isAdmin
 		public
 		returns(bool success)
 	{
 		require(price > 0);
 		require(stock >= 0);
+		globalId++;
 		Product memory product = Product(globalId, price, stock);
 		products[globalId] = product;
-		globalId ++;
 		LogAddProduct(globalId, price, stock);
 		return true;
 	}
