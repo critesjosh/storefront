@@ -66,7 +66,7 @@ contract Storefront {
 		return true;
 	}
 
-	function addProduct(uint price, uint stock, uint time)
+	function addProduct(uint price, uint stock)
 		isAdmin
 		public
 		returns(bool success)

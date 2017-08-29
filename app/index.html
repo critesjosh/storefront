@@ -19,28 +19,30 @@
 
 
 			<form id="addAdminForm" ng-submit="addAdmin()" ng-show="isOwner">
-				<input type="text" name="newAdmin" ng-model="newAdmin" required/>
+				<input type="text" name="newAdmin" ng-model="newAdmin" required placeholder="New admin address"/>
 				<input type="submit" class="btn btn-primary" value="Add Admin"/>
 			</form>
 
 			<form id="addProdcutForm" ng-submit="addProduct()" ng-show="isAdmin">
-				<input type="text" name="price" ng-model="price" required/>
-				<input type="text" name="stock" ng-model="stock" required/>
+				<input type="text" name="price" ng-model="price" required placeholder="Price (in wei)" />
+				<input type="text" name="stock" ng-model="stock" required placeholder="Amount in stock" />
 				<input type="submit" class="btn btn-primary" value="Add Product"/>
 			</form>
 
 			<div class="control-group" ng-repeat="product in formattedProducts track by $index">
 				<div style="border:1px solid grey">
 					<div>Product ID: {{ product.id }}</div>
-					<div>Price: {{ product.price }}</div>
+					<div>Price: {{ product.price }} (wei)</div>
 					<div>Amount in stock: {{ product.stock }}</div>
 					<form class="controls">
-						<input type="text" name="quantity" ng-model="product.quantity" required />
-						<input type="submit" class="btn btn-success" ng-click="purchaseProduct()" value="Purchase"/>
+						Quantity to purchase: <input type="text" name="quantity" ng-model="product.quantity" required />
 					</form>
 				</div>
 				<br>
 			</div>
+
+			<input type="submit" class="btn btn-success" ng-click="purchaseProduct()" value="Purchase"/>
+
 
 		</div>
 	</div>

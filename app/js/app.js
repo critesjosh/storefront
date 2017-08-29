@@ -36,6 +36,7 @@ app.controller("storefrontController",
 
 		$scope.productLog = [];
 		$scope.purchaseLog = [];
+		$scope.adminLog = [];
 		$scope.formatProductData();
 
 		Storefront.deployed()
@@ -52,7 +53,6 @@ app.controller("storefrontController",
 					$scope.productLog.push(newProduct);
 					$scope.formatProductData();
 				}
-				return $scope.getOwnerStatus();
 			});
 
 			$scope.addProductPurchasedWatcher = $scope.contract.LogPurchase({}, {fromBlock: 0})
@@ -63,24 +63,32 @@ app.controller("storefrontController",
 					console.log("new purchase", newPurchase);
 					$scope.purchaseLog.push(newPurchase);
 					$scope.updateProductData(newPurchase.args.id.toString(10), newPurchase.args.stock.toString(10));
-					//$scope.formatProductData();
 				}
-				return $scope.getOwnerStatus();
+			});
+
+			$scope.addAdminWatcher = $scope.contract.LogNewAdmin({}, {fromBlock: 0})
+			.watch(function(err, newAdmin){
+				if(err) {
+					console.log("error watching purchase", err);
+				} else {
+					console.log("new admin", newAdmin);
+					$scope.adminLog.push(newAdmin);
+				}
 			});
 
 			return $scope.getOwnerStatus();
 		});
 
 	// ToDO:
-	// get products
-	// show purchase option
-	// if address == owner, show add admin input
-	// if address == admin, show add product input
 	//
-
+	// make add admin function more robust
 
 	$scope.addAdmin = function(){
-
+		//check that new admin is a valid address
+		// if(!newAdmin instanceof address) alert("Please enter a valid ethereum address"); return;
+		var admin = $scope.newAdmin;
+		$scope.newAdmin = 0;
+		$scope.contract.addAdmin(admin, {from:$scope.account});
 	};
 
 	$scope.purchaseProduct = function() {
@@ -91,14 +99,18 @@ app.controller("storefrontController",
 			product.quantity = 0;
 			if(amount === 0) continue;
 			console.log(amount, product.id);
-			$scope.contract.purchaseProduct(parseInt(product.id), parseInt(amount), {from:$scope.account, value: web3.toWei(totalCost, 'ether')});
-		}
-	}
+			$scope.contract.purchaseProduct(parseInt(product.id), parseInt(amount), {from:$scope.account, value: totalCost});
+		};
+	};
 
 	$scope.addProduct = function() {
-		if(parseInt($scope.price) <= 0) return;
-		if(parseInt($scope.stock) < 0) return;
-		$scope.contract.addProduct(parseInt($scope.price), parseInt($scope.stock), {from:$scope.account, gas: 900000})
+		var price = parseInt($scope.price);
+		var stock = parseInt($scope.stock);
+		$scope.price = 0;
+		$scope.stock = 0;
+		if(parseInt(price) <= 0){ alert("Please enter a valid product price"); return;}
+		if(parseInt(stock) < 0){ alert("Please enter an item stock quantity greater than 0."); return;}
+		$scope.contract.addProduct(parseInt(price), parseInt(stock), {from:$scope.account, gas: 900000})
 		 .then(function(txn){
 		 	//console.log("product added !! txn receipt", txn);
 		 });
