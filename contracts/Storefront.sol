@@ -3,10 +3,8 @@ pragma solidity ^0.4.6;
 contract Storefront {
 
 	address public owner;
-	uint    public globalId;
 
 	struct Product {
-		uint id;
 		uint price;
 		uint stock;
 	}
@@ -37,7 +35,7 @@ contract Storefront {
 		admins[msg.sender] = true;
 	}
 
-	function getAdmin()
+	function getUserIsAdmin()
 		public
 		constant
 		returns(bool isIndeed)
@@ -66,17 +64,17 @@ contract Storefront {
 		return true;
 	}
 
-	function addProduct(uint price, uint stock)
+	function addProduct(uint price, uint stock, uint id)
 		isAdmin
 		public
 		returns(bool success)
 	{
 		require(price > 0);
 		require(stock >= 0);
-		globalId++;
-		Product memory product = Product(globalId, price, stock);
-		products[globalId] = product;
-		LogAddProduct(globalId, price, stock);
+		require(products[id].price == 0); // to make sure this product id has not been initialized
+		Product memory product = Product(price, stock);
+		products[id] = product;
+		LogAddProduct(id, price, stock);
 		return true;
 	}
 
@@ -100,23 +98,25 @@ contract Storefront {
 		public
 		returns(bool success)
 	{
-		require(balances[this] > 0);
 		require(amount > 0);
-		balances[this] -= amount;
+		require(balances[owner] - amount > 0);
+		balances[owner] -= amount;
 		to.transfer(amount);
 		return true;
 	}
 
-	function withdrawValue(uint amountToWithdraw)
-		public
-		isOwner
-		returns(bool success)
-	{
-		require(balances[this] > 0);
-		balances[this] -= amountToWithdraw;
-		owner.transfer(amountToWithdraw);
-		return true;
-	}
+	// covered by make payment to owner
+
+	// function withdrawValue(uint amountToWithdraw)
+	// 	public
+	// 	isOwner
+	// 	returns(bool success)
+	// {
+	// 	require(balances[owner] - amountToWithdraw > 0)
+	// 	balances[owner] -= amountToWithdraw;
+	// 	owner.transfer(amountToWithdraw);
+	// 	return true;
+	// }
 
 	function removeProduct()
 		public
