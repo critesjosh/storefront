@@ -1,8 +1,13 @@
 pragma solidity ^0.4.6;
 
-contract Storefront {
+import './Ownable.sol';
+import './PullPayment.sol';
+import './SafeMath.sol';
 
-	address public owner;
+
+contract Storefront is Ownable {
+	using SafeMath for uint256;
+	//address public owner;
 
 	struct Product {
 		uint price;
@@ -11,18 +16,14 @@ contract Storefront {
 
 	mapping(uint => Product) public products;
 	mapping(address => bool) public admins;
-	mapping(address => uint) public balances;
+	//mapping(address => uint) public balances;
 
 	event LogNewAdmin(address address1);
 	event LogRemovedAdmin(address address1);
 	event LogAddProduct(uint id, uint price, uint stock);
 	event LogPurchase(address purchaser, uint id, uint price, uint quantity, uint stock);
 	event LogPayment(address to, uint amount);
-
-	modifier isOwner {
-		require(msg.sender == owner);
-		_;
-	}
+	event LogWithdrawal(address recipient, uint amount);
 
 	modifier isAdmin {
 		require(admins[msg.sender] == true);
@@ -31,7 +32,7 @@ contract Storefront {
 
 	//constructor
 	function Storefront(){
-		owner = msg.sender;
+		//owner = msg.sender; //covered by Ownable
 		admins[msg.sender] = true;
 	}
 
@@ -44,7 +45,7 @@ contract Storefront {
 	}
 
 	function addAdmin(address newAdmin)
-		isOwner
+		onlyOwner
 		public
 		returns(bool success)
 	{
@@ -54,7 +55,7 @@ contract Storefront {
 	}
 
 	function removeAdmin(address deleteAdmin)
-		isOwner
+		onlyOwner
 		public
 		returns(bool success)
 	{
@@ -84,39 +85,23 @@ contract Storefront {
 		returns(bool success)
 	{
 		require(products[id].stock >= quantity);
-		require(msg.value >= products[id].price * quantity);
-		uint amountToReturn = msg.value - (products[id].price * quantity);
-		balances[this] += (products[id].price * quantity);
+		uint totalCost = products[id].price.mul(quantity);
+		require(msg.value >= totalCost);
+
+		uint amountToReturn = msg.value.sub(totalCost);
+		
+//separate balance transfers and stock adjustment to different functions
+
+		//balances[this] += (products[id].price * quantity);
+		// PullPayment.asyncSend(this, totalCost); 
+
 		products[id].stock -= quantity;
-		msg.sender.transfer(amountToReturn);
+		msg.sender.transfer(amountToReturn); //return any overpayment
 		LogPurchase(msg.sender, id, products[id].price, quantity, products[id].stock);
 		return true;
 	}
 
-	function makePayment(address to, uint amount)
-		isOwner
-		public
-		returns(bool success)
-	{
-		require(amount > 0);
-		require(balances[owner] - amount > 0);
-		balances[owner] -= amount;
-		to.transfer(amount);
-		return true;
-	}
-
-	// covered by make payment to owner
-
-	// function withdrawValue(uint amountToWithdraw)
-	// 	public
-	// 	isOwner
-	// 	returns(bool success)
-	// {
-	// 	require(balances[owner] - amountToWithdraw > 0)
-	// 	balances[owner] -= amountToWithdraw;
-	// 	owner.transfer(amountToWithdraw);
-	// 	return true;
-	// }
+	// withdrawals covered by withdrawPayments() in PullPayment.sol
 
 	function removeProduct()
 		public
