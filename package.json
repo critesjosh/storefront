@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "truffle-default-builder": "^2.0.0"
+    "truffle-default-builder": "^2.0.0",
+    "uport-connect": "^0.6.5"
   }
 }

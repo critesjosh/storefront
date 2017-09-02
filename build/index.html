@@ -19,16 +19,27 @@
 	<div class="row">
 		<div class="col-md-12">
 
+		<h1>Etherbay</h1>
+		<h2>Sell your stuff via the ethereum blockchain</h2>
+
+		<p>How it works:</p>
+		<p>Admins can add and remove products. Send me a tweet @critesjosh_ and I'll add your address to be an admin.</p>
+		<p>Anyone can purchase products (as long as you have enough ethereum in your account).
 
 			<form id="addAdminForm" ng-submit="addAdmin()" ng-show="isOwner">
 				<input type="text" name="newAdmin" ng-model="newAdmin" required placeholder="New admin address"/>
 				<input type="submit" class="btn btn-primary" value="Add Admin"/>
 			</form>
 
-			<form id="addProdcutForm" ng-submit="addProduct()" ng-show="isAdmin">
+			<form id="addProductForm" ng-submit="addProduct()" ng-show="isAdmin">
 				<input type="text" name="price" ng-model="price" required placeholder="Price (in wei)" />
 				<input type="text" name="stock" ng-model="stock" required placeholder="Amount in stock" />
 				<input type="submit" class="btn btn-primary" value="Add Product"/>
+			</form>
+
+			<form ng-submit="removeProduct()" ng-show="isAdmin">
+				<input type="text" ng-model="toRemoveId" required placeholder="ID of product to remove"/>
+				<input type="submit" class="btn btn-danger" value="Remove Product"/>
 			</form>
 
 			<div class="control-group" ng-repeat="product in formattedProducts track by $index">

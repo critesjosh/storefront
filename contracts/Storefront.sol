@@ -3,66 +3,25 @@ pragma solidity ^0.4.6;
 import './Ownable.sol';
 import './PullPayment.sol';
 import './SafeMath.sol';
+import './Administrable.sol';
 
-
-contract Storefront is Ownable {
+contract Storefront is Ownable, Administrable, PullPayment {
 	using SafeMath for uint256;
-	//address public owner;
 
 	struct Product {
 		uint price;
 		uint stock;
+		address manager;
 	}
 
 	mapping(uint => Product) public products;
-	mapping(address => bool) public admins;
-	//mapping(address => uint) public balances;
 
-	event LogNewAdmin(address address1);
-	event LogRemovedAdmin(address address1);
-	event LogAddProduct(uint id, uint price, uint stock);
+	event LogAddProduct(uint id, address manager, uint price, uint stock);
+	event LogRemovedProduct(uint id, address manager, uint price, uint stock);
 	event LogPurchase(address purchaser, uint id, uint price, uint quantity, uint stock);
-	event LogPayment(address to, uint amount);
-	event LogWithdrawal(address recipient, uint amount);
-
-	modifier isAdmin {
-		require(admins[msg.sender] == true);
-		_;
-	}
 
 	//constructor
 	function Storefront(){
-		//owner = msg.sender; //covered by Ownable
-		admins[msg.sender] = true;
-	}
-
-	function getUserIsAdmin()
-		public
-		constant
-		returns(bool isIndeed)
-	{
-		 return admins[msg.sender];
-	}
-
-	function addAdmin(address newAdmin)
-		onlyOwner
-		public
-		returns(bool success)
-	{
-		admins[newAdmin] == true;
-		LogNewAdmin(newAdmin);
-		return true;
-	}
-
-	function removeAdmin(address deleteAdmin)
-		onlyOwner
-		public
-		returns(bool success)
-	{
-		require(deleteAdmin != owner); //owner cannot be removed from admins
-		admins[deleteAdmin] = false;
-		LogRemovedAdmin(deleteAdmin);
-		return true;
 	}
 
 	function addProduct(uint price, uint stock, uint id)
@@ -70,12 +29,11 @@ contract Storefront is Ownable {
 		public
 		returns(bool success)
 	{
+		require(products[id].price == 0); //make sure a product with this id has not been created
 		require(price > 0);
 		require(stock >= 0);
-		require(products[id].price == 0); // to make sure this product id has not been initialized
-		Product memory product = Product(price, stock);
-		products[id] = product;
-		LogAddProduct(id, price, stock);
+		products[id] = Product(price, stock, msg.sender);
+		LogAddProduct(id, msg.sender, price, stock);
 		return true;
 	}
 
@@ -89,11 +47,7 @@ contract Storefront is Ownable {
 		require(msg.value >= totalCost);
 
 		uint amountToReturn = msg.value.sub(totalCost);
-		
-//separate balance transfers and stock adjustment to different functions
-
-		//balances[this] += (products[id].price * quantity);
-		// PullPayment.asyncSend(this, totalCost); 
+		PullPayment.asyncSend(this, totalCost); 
 
 		products[id].stock -= quantity;
 		msg.sender.transfer(amountToReturn); //return any overpayment
@@ -101,14 +55,20 @@ contract Storefront is Ownable {
 		return true;
 	}
 
-	// withdrawals covered by withdrawPayments() in PullPayment.sol
+	// withdrawals covered by PullPayment.withdrawPayments()
 
-	function removeProduct()
+	function removeProduct(uint id)
 		public
 		isAdmin
 		returns(bool success)
 	{
 		// remove a prodcut from the list
+		require(products[id].price != 0 && products[id].stock != 0); // make sure the prodcut has been added
+		uint stock = products[id].stock;
+		uint price = products[id].price;
+		address manager = products[id].manager;
+		products[id] = Product(0,0,0);  // set to the uninitialized state
+		LogRemovedProduct(id, manager, price, stock);
 		return true;
 	}
 

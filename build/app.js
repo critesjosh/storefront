@@ -14531,6 +14531,137 @@ module.exports={
 
 
 window.__contracts__ = {
+  "Administrable": {
+  "contract_name": "Administrable",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "deleteAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "removeAdmin",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "admins",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "addAdmin",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getUserIsAdmin",
+      "outputs": [
+        {
+          "name": "isIndeed",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "address1",
+          "type": "address"
+        }
+      ],
+      "name": "LogNewAdmin",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "address1",
+          "type": "address"
+        }
+      ],
+      "name": "LogRemovedAdmin",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b5b60008054600160a060020a03191633600160a060020a03161790555b600160a060020a0333166000908152600160208190526040909120805460ff191690911790555b5b61035b806100646000396000f3006060604052361561005c5763ffffffff60e060020a6000350416631785f53c8114610061578063429b62e51461009457806370480275146100c757806384d0bfd4146100fa5780638da5cb5b14610121578063f2fde38b14610150575b600080fd5b341561006c57600080fd5b610080600160a060020a0360043516610171565b604051901515815260200160405180910390f35b341561009f57600080fd5b610080600160a060020a0360043516610211565b604051901515815260200160405180910390f35b34156100d257600080fd5b610080600160a060020a0360043516610226565b604051901515815260200160405180910390f35b341561010557600080fd5b6100806102b0565b604051901515815260200160405180910390f35b341561012c57600080fd5b6101346102d0565b604051600160a060020a03909116815260200160405180910390f35b341561015b57600080fd5b61016f600160a060020a03600435166102df565b005b6000805433600160a060020a0390811691161461018d57600080fd5b600054600160a060020a03838116911614156101a857600080fd5b600160a060020a03821660009081526001602052604090819020805460ff191690557fe6e9128d95298888c459545040e07936d4c97dd2fea5e367bd1bfb7d90b6cf8290839051600160a060020a03909116815260200160405180910390a15060015b5b919050565b60016020526000908152604090205460ff1681565b6000805433600160a060020a0390811691161461024257600080fd5b600160a060020a038216600090815260016020819052604091829020805460ff191690911790557f39e7d4b9ba48f55a740a5192809dbc498fa12724c030b37dab126a3f6774c0f390839051600160a060020a03909116815260200160405180910390a15060015b5b919050565b600160a060020a03331660009081526001602052604090205460ff165b90565b600054600160a060020a031681565b60005433600160a060020a039081169116146102fa57600080fd5b600160a060020a038116151561030f57600080fd5b60008054600160a060020a031916600160a060020a0383161790555b5b505600a165627a7a72305820134af7752a324f5ca0b07eaa07a4e79dde4df9ce6fa6c2a21f0416d6885eea330029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1504310221196
+},
   "Migrations": {
   "contract_name": "Migrations",
   "abi": [
@@ -14597,8 +14728,8 @@ window.__contracts__ = {
     "3": {
       "links": {},
       "events": {},
-      "updated_at": 1503969905412,
-      "address": "0xd83170c7a52c4e8fb88e933403745852dc3694f4"
+      "updated_at": 1503970776509,
+      "address": "0xf1b1bf0c2b121749557eea77fb4898d6592c4864"
     },
     "1503842619489": {
       "events": {},
@@ -14641,22 +14772,180 @@ window.__contracts__ = {
       "links": {},
       "address": "0x1f9be079dfe296e413a5ebdd779095a771dfa5df",
       "updated_at": 1503970589031
+    },
+    "1504305327803": {
+      "events": {},
+      "links": {},
+      "address": "0xafe4400a11dfe1a174a2a62deb59b00b8cd7c3e1",
+      "updated_at": 1504310314788
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1503970589031
+  "updated_at": 1504310314788
+},
+  "Ownable": {
+  "contract_name": "Ownable",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b60008054600160a060020a03191633600160a060020a03161790555b5b6101008061003c6000396000f300606060405263ffffffff60e060020a6000350416638da5cb5b8114602d578063f2fde38b146059575b600080fd5b3415603757600080fd5b603d6077565b604051600160a060020a03909116815260200160405180910390f35b3415606357600080fd5b6075600160a060020a03600435166086565b005b600054600160a060020a031681565b60005433600160a060020a0390811691161460a057600080fd5b600160a060020a038116151560b457600080fd5b60008054600160a060020a031916600160a060020a0383161790555b5b505600a165627a7a72305820c3e55972ac2b8f50c23c67d3ac46e8ba4b26833fcbc39125411d197f0754a10c0029",
+  "networks": {
+    "1504305327803": {
+      "events": {},
+      "links": {},
+      "address": "0x3aee4b83f7d8afbd771f0da38f5f32cb32a5cacc",
+      "updated_at": 1504310314777
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1504310314777
+},
+  "PullPayment": {
+  "contract_name": "PullPayment",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "totalPayments",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "withdrawPayments",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "payments",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "payment",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogWithdrawal",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b6101dd8061001f6000396000f300606060405263ffffffff60e060020a6000350416625b448781146100395780636103d70b1461005e578063e2982c2114610073575b600080fd5b341561004457600080fd5b61004c6100a4565b60405190815260200160405180910390f35b341561006957600080fd5b6100716100aa565b005b341561007e57600080fd5b61004c600160a060020a0360043516610188565b60405190815260200160405180910390f35b60015481565b33600160a060020a0381166000908152602081905260409020548015156100d057600080fd5b600160a060020a03301631819010156100e857600080fd5b6001546100fb908263ffffffff61019a16565b600155600160a060020a0382166000818152602081905260408082209190915582156108fc0290839051600060405180830381858888f19350505050151561013f57fe5b7fb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e913382604051600160a060020a03909216825260208201526040908101905180910390a15b5050565b60006020819052908152604090205481565b6000828211156101a657fe5b508082035b929150505600a165627a7a7230582056043c546e234b74cbda8c8fd90461c5ecbc44c6ee546bfdea572906826d7b310029",
+  "networks": {
+    "1504305327803": {
+      "events": {
+        "0xb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e91": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "payment",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xc453e0c9dbeaa826427bd31d23b727a56ab1f54d",
+      "updated_at": 1504310314777
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1504310314777
+},
+  "SafeMath": {
+  "contract_name": "SafeMath",
+  "abi": [],
+  "unlinked_binary": "0x60606040523415600e57600080fd5b5b603680601c6000396000f30060606040525b600080fd00a165627a7a723058200a2b95926c4553d4996ebbaacee96b9a5ff0c79236622217039de71f803712060029",
+  "networks": {
+    "1504305327803": {
+      "events": {},
+      "links": {},
+      "address": "0xae8b32ee120c4775413c0014969bc83fb244da69",
+      "updated_at": 1504310314781
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1504310314781
 },
   "Storefront": {
   "contract_name": "Storefront",
   "abi": [
     {
-      "constant": false,
+      "constant": true,
       "inputs": [],
-      "name": "removeProduct",
+      "name": "totalPayments",
       "outputs": [
         {
-          "name": "success",
-          "type": "bool"
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -14688,24 +14977,6 @@ window.__contracts__ = {
           "type": "address"
         }
       ],
-      "name": "balances",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
       "name": "admins",
       "outputs": [
         {
@@ -14717,15 +14988,28 @@ window.__contracts__ = {
       "type": "function"
     },
     {
-      "constant": true,
-      "inputs": [],
-      "name": "getAdmin",
+      "constant": false,
+      "inputs": [
+        {
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "removeProduct",
       "outputs": [
         {
-          "name": "isIndeed",
+          "name": "success",
           "type": "bool"
         }
       ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "withdrawPayments",
+      "outputs": [],
       "payable": false,
       "type": "function"
     },
@@ -14758,37 +15042,28 @@ window.__contracts__ = {
       "name": "products",
       "outputs": [
         {
-          "name": "id",
-          "type": "uint256"
-        },
-        {
           "name": "price",
           "type": "uint256"
         },
         {
           "name": "stock",
           "type": "uint256"
+        },
+        {
+          "name": "manager",
+          "type": "address"
         }
       ],
       "payable": false,
       "type": "function"
     },
     {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "price",
-          "type": "uint256"
-        },
-        {
-          "name": "stock",
-          "type": "uint256"
-        }
-      ],
-      "name": "addProduct",
+      "constant": true,
+      "inputs": [],
+      "name": "getUserIsAdmin",
       "outputs": [
         {
-          "name": "success",
+          "name": "isIndeed",
           "type": "bool"
         }
       ],
@@ -14812,11 +15087,19 @@ window.__contracts__ = {
       "constant": false,
       "inputs": [
         {
-          "name": "amountToWithdraw",
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "name": "stock",
+          "type": "uint256"
+        },
+        {
+          "name": "id",
           "type": "uint256"
         }
       ],
-      "name": "withdrawValue",
+      "name": "addProduct",
       "outputs": [
         {
           "name": "success",
@@ -14849,19 +15132,6 @@ window.__contracts__ = {
       "type": "function"
     },
     {
-      "constant": true,
-      "inputs": [],
-      "name": "globalId",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "type": "function"
-    },
-    {
       "constant": false,
       "inputs": [],
       "name": "coPurchase",
@@ -14875,24 +15145,33 @@ window.__contracts__ = {
       "type": "function"
     },
     {
-      "constant": false,
+      "constant": true,
       "inputs": [
         {
-          "name": "to",
+          "name": "",
           "type": "address"
-        },
+        }
+      ],
+      "name": "payments",
+      "outputs": [
         {
-          "name": "amount",
+          "name": "",
           "type": "uint256"
         }
       ],
-      "name": "makePayment",
-      "outputs": [
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
         {
-          "name": "success",
-          "type": "bool"
+          "name": "newOwner",
+          "type": "address"
         }
       ],
+      "name": "transferOwnership",
+      "outputs": [],
       "payable": false,
       "type": "function"
     },
@@ -14906,32 +15185,13 @@ window.__contracts__ = {
       "inputs": [
         {
           "indexed": false,
-          "name": "address1",
-          "type": "address"
-        }
-      ],
-      "name": "LogNewAdmin",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "address1",
-          "type": "address"
-        }
-      ],
-      "name": "LogRemovedAdmin",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
           "name": "id",
           "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "manager",
+          "type": "address"
         },
         {
           "indexed": false,
@@ -14945,6 +15205,33 @@ window.__contracts__ = {
         }
       ],
       "name": "LogAddProduct",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "manager",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "stock",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogRemovedProduct",
       "type": "event"
     },
     {
@@ -14984,20 +15271,44 @@ window.__contracts__ = {
       "inputs": [
         {
           "indexed": false,
-          "name": "to",
+          "name": "recipient",
           "type": "address"
         },
         {
           "indexed": false,
-          "name": "amount",
+          "name": "payment",
           "type": "uint256"
         }
       ],
-      "name": "LogPayment",
+      "name": "LogWithdrawal",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "address1",
+          "type": "address"
+        }
+      ],
+      "name": "LogNewAdmin",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "address1",
+          "type": "address"
+        }
+      ],
+      "name": "LogRemovedAdmin",
       "type": "event"
     }
   ],
-  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b60008054600160a060020a03191633600160a060020a031690811782558152600360205260409020805460ff191660011790555b5b6108bd806100546000396000f300606060405236156100b45763ffffffff60e060020a6000350416630177b55681146100b95780631785f53c146100e057806327e235e314610113578063429b62e5146101445780636e9960c314610177578063704802751461019e5780637acc0b20146101d15780638b6924791461020b5780638da5cb5b1461023857806391cdd9f014610267578063a044042614610291578063ca666823146102b3578063d5d2639b146102d8578063f98cf07c146102ff575b600080fd5b34156100c457600080fd5b6100cc610335565b604051901515815260200160405180910390f35b34156100eb57600080fd5b6100cc600160a060020a0360043516610367565b604051901515815260200160405180910390f35b341561011e57600080fd5b610132600160a060020a0360043516610407565b60405190815260200160405180910390f35b341561014f57600080fd5b6100cc600160a060020a0360043516610419565b604051901515815260200160405180910390f35b341561018257600080fd5b6100cc61042e565b604051901515815260200160405180910390f35b34156101a957600080fd5b6100cc600160a060020a036004351661044e565b604051901515815260200160405180910390f35b34156101dc57600080fd5b6101e76004356104c3565b60405180848152602001838152602001828152602001935050505060405180910390f35b341561021657600080fd5b6100cc6004356024356104e3565b604051901515815260200160405180910390f35b341561024357600080fd5b61024b6105db565b604051600160a060020a03909116815260200160405180910390f35b341561027257600080fd5b6100cc6004356105ea565b604051901515815260200160405180910390f35b6100cc600435602435610681565b604051901515815260200160405180910390f35b34156102be57600080fd5b6101326107bf565b60405190815260200160405180910390f35b34156102e357600080fd5b6100cc6107c5565b604051901515815260200160405180910390f35b341561030a57600080fd5b6100cc600160a060020a03600435166024356107cb565b604051901515815260200160405180910390f35b600160a060020a03331660009081526003602052604081205460ff16151560011461035f57600080fd5b5060015b5b90565b6000805433600160a060020a0390811691161461038357600080fd5b600054600160a060020a038381169116141561039e57600080fd5b600160a060020a03821660009081526003602052604090819020805460ff191690557fe6e9128d95298888c459545040e07936d4c97dd2fea5e367bd1bfb7d90b6cf8290839051600160a060020a03909116815260200160405180910390a15060015b5b919050565b60046020526000908152604090205481565b60036020526000908152604090205460ff1681565b600160a060020a03331660009081526003602052604090205460ff165b90565b6000805433600160a060020a0390811691161461046a57600080fd5b600160a060020a03821660005260036020527f39e7d4b9ba48f55a740a5192809dbc498fa12724c030b37dab126a3f6774c0f382604051600160a060020a03909116815260200160405180910390a15060015b5b919050565b600260208190526000918252604090912080546001820154919092015483565b60006104ed61086f565b600160a060020a03331660009081526003602052604090205460ff16151560011461051757600080fd5b6000841161052457600080fd5b600083101561053257600080fd5b60018054810190556060604051908101604090815260015480835260208084018890528284018790526000918252600290522090915081908151815560208201518160010155604082015181600201559050507ffc3b97c0a0e8def0b9023864494a609d53a183dce7d00ed21351c07f34401593600154858560405180848152602001838152602001828152602001935050505060405180910390a1600191505b5b5092915050565b600054600160a060020a031681565b6000805433600160a060020a0390811691161461060657600080fd5b600160a060020a0330166000908152600460205260408120541161062957600080fd5b600160a060020a033081166000908152600460205260408082208054869003905590549091169083156108fc0290849051600060405180830381858888f19350505050151561067757600080fd5b5060015b5b919050565b6000828152600260208190526040822001548190839010156106a257600080fd5b60008481526002602052604090206001015483023410156106c257600080fd5b5060008381526002602081815260408084206001810154600160a060020a033081168752600485528387208054928a02928301905595899052928490529092018054869003905534039133169082156108fc0290839051600060405180830381858888f19350505050151561073657600080fd5b60008481526002602081905260409182902060018101549101547f634aeed90381b623ce040ab7230502291b9894f1059114992c97f1577ec9b9239233928892909188919051600160a060020a03909516855260208501939093526040808501929092526060840152608083019190915260a0909101905180910390a1600191505b5092915050565b60015481565b60015b90565b6000805433600160a060020a039081169116146107e757600080fd5b600160a060020a0330166000908152600460205260408120541161080a57600080fd5b6000821161081757600080fd5b600160a060020a0330811660009081526004602052604090819020805485900390559084169083156108fc0290849051600060405180830381858888f19350505050151561086457600080fd5b5060015b5b92915050565b60606040519081016040528060008152602001600081526020016000815250905600a165627a7a723058207c48dee4bfb677cca32d52a150197da71a1d2112ab8beca5b8f5b10f76048ddf0029",
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b5b5b60008054600160a060020a03191633600160a060020a03161790555b600160a060020a0333166000908152600160208190526040909120805460ff191690911790555b5b5b610aae806100666000396000f300606060405236156100b35763ffffffff60e060020a6000350416625b448781146100b85780631785f53c146100dd578063429b62e5146101105780635ee95cae146101435780636103d70b1461016d57806370480275146101825780637acc0b20146101b557806384d0bfd4146101f85780638da5cb5b1461021f5780639937b38f1461024e578063a04404261461027e578063d5d2639b146102a0578063e2982c21146102c7578063f2fde38b146102f8575b600080fd5b34156100c357600080fd5b6100cb610319565b60405190815260200160405180910390f35b34156100e857600080fd5b6100fc600160a060020a036004351661031f565b604051901515815260200160405180910390f35b341561011b57600080fd5b6100fc600160a060020a03600435166103bf565b604051901515815260200160405180910390f35b341561014e57600080fd5b6100fc6004356103d4565b604051901515815260200160405180910390f35b341561017857600080fd5b610180610530565b005b341561018d57600080fd5b6100fc600160a060020a036004351661060e565b604051901515815260200160405180910390f35b34156101c057600080fd5b6101cb600435610698565b6040519283526020830191909152600160a060020a03166040808301919091526060909101905180910390f35b341561020357600080fd5b6100fc6106c2565b604051901515815260200160405180910390f35b341561022a57600080fd5b6102326106e2565b604051600160a060020a03909116815260200160405180910390f35b341561025957600080fd5b6100fc6004356024356044356106f1565b604051901515815260200160405180910390f35b6100fc60043560243561081b565b604051901515815260200160405180910390f35b34156102ab57600080fd5b6100fc61095d565b604051901515815260200160405180910390f35b34156102d257600080fd5b6100cb600160a060020a0360043516610963565b60405190815260200160405180910390f35b341561030357600080fd5b610180600160a060020a0360043516610975565b005b60035481565b6000805433600160a060020a0390811691161461033b57600080fd5b600054600160a060020a038381169116141561035657600080fd5b600160a060020a03821660009081526001602052604090819020805460ff191690557fe6e9128d95298888c459545040e07936d4c97dd2fea5e367bd1bfb7d90b6cf8290839051600160a060020a03909116815260200160405180910390a15060015b5b919050565b60016020526000908152604090205460ff1681565b600160a060020a033316600090815260016020819052604082205482918291829160ff90911615151461040657600080fd5b60008581526004602052604090205415801590610433575060008581526004602052604090206001015415155b151561043e57600080fd5b50505060008281526004602052604090819020600181015481546002909201549092600160a060020a0390911690606090519081016040908152600080835260208084018290528284018290528882526004905220815181556020820151816001015560408201516002919091018054600160a060020a031916600160a060020a03909216919091179055507f9fe0bc5fd561125601fbf63ed4b68c5f6fc05316378a291a8279e433bc259cdc85828486604051938452600160a060020a03909216602084015260408084019190915260608301919091526080909101905180910390a1600193505b5b505050919050565b33600160a060020a03811660009081526002602052604090205480151561055657600080fd5b600160a060020a033016318190101561056e57600080fd5b600354610581908263ffffffff6109c516565b600355600160a060020a0382166000818152600260205260408082209190915582156108fc0290839051600060405180830381858888f1935050505015156105c557fe5b7fb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e913382604051600160a060020a03909216825260208201526040908101905180910390a15b5050565b6000805433600160a060020a0390811691161461062a57600080fd5b600160a060020a038216600090815260016020819052604091829020805460ff191690911790557f39e7d4b9ba48f55a740a5192809dbc498fa12724c030b37dab126a3f6774c0f390839051600160a060020a03909116815260200160405180910390a15060015b5b919050565b600460205260009081526040902080546001820154600290920154909190600160a060020a031683565b600160a060020a03331660009081526001602052604090205460ff165b90565b600054600160a060020a031681565b600160a060020a033316600090815260016020819052604082205460ff1615151461071b57600080fd5b6000828152600460205260409020541561073457600080fd5b6000841161074157600080fd5b600083101561074f57600080fd5b606060405190810160409081528582526020808301869052600160a060020a033316828401526000858152600490915220815181556020820151816001015560408201516002919091018054600160a060020a031916600160a060020a03909216919091179055507f843a5676feae31ef8b28965dd36ed106e325853979413261870b199fb91c7c4a82338686604051938452600160a060020a03909216602084015260408084019190915260608301919091526080909101905180910390a15060015b5b9392505050565b600082815260046020526040812060010154819081908490101561083e57600080fd5b60008581526004602052604090205461085d908563ffffffff6109dc16565b9150348290101561086d57600080fd5b61087d348363ffffffff6109c516565b90506108893083610a0b565b6000858152600460205260409081902060010180548690039055600160a060020a0333169082156108fc0290839051600060405180830381858888f1935050505015156108d557600080fd5b6000858152600460205260409081902080546001909101547f634aeed90381b623ce040ab7230502291b9894f1059114992c97f1577ec9b9239233928992909189919051600160a060020a03909516855260208501939093526040808501929092526060840152608083019190915260a0909101905180910390a1600192505b505092915050565b60015b90565b60026020526000908152604090205481565b60005433600160a060020a0390811691161461099057600080fd5b600160a060020a03811615156109a557600080fd5b60008054600160a060020a031916600160a060020a0383161790555b5b50565b6000828211156109d157fe5b508082035b92915050565b60008282028315806109f857508284828115156109f557fe5b04145b1515610a0057fe5b8091505b5092915050565b600160a060020a038216600090815260026020526040902054610a34908263ffffffff610a6816565b600160a060020a038316600090815260026020526040902055600354610a60908263ffffffff610a6816565b6003555b5050565b600082820183811015610a0057fe5b8091505b50929150505600a165627a7a72305820c34235065203b7d0f315adc57f10e4d4d18c1fbe5aafa7d15a2b5634fd55ecfb0029",
   "networks": {
     "3": {
       "events": {
@@ -15098,8 +15409,8 @@ window.__contracts__ = {
         }
       },
       "links": {},
-      "address": "0xb9cf07521a8976d6be1a3bdf476c233c1a665e44",
-      "updated_at": 1503969905405
+      "address": "0xd8152f40fe52f176cbfb59c9ec2501d131c5d8ba",
+      "updated_at": 1503970776503
     },
     "1503842619489": {
       "events": {
@@ -15826,10 +16137,188 @@ window.__contracts__ = {
       "links": {},
       "address": "0x089469198706df2be3e5d81a2d8225c68e428bc6",
       "updated_at": 1503970589024
+    },
+    "1504305327803": {
+      "events": {
+        "0xfc3b97c0a0e8def0b9023864494a609d53a183dce7d00ed21351c07f34401593": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "price",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "stock",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogAddProduct",
+          "type": "event"
+        },
+        "0x1f179bdeee5b8597449a7a08f3fbc83d1e2a81434d982a66052e34cc17949396": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "price",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "stock",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogRemovedProduct",
+          "type": "event"
+        },
+        "0x634aeed90381b623ce040ab7230502291b9894f1059114992c97f1577ec9b923": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "purchaser",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "price",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "quantity",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "stock",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogPurchase",
+          "type": "event"
+        },
+        "0xb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e91": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "payment",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x39e7d4b9ba48f55a740a5192809dbc498fa12724c030b37dab126a3f6774c0f3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "address1",
+              "type": "address"
+            }
+          ],
+          "name": "LogNewAdmin",
+          "type": "event"
+        },
+        "0xe6e9128d95298888c459545040e07936d4c97dd2fea5e367bd1bfb7d90b6cf82": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "address1",
+              "type": "address"
+            }
+          ],
+          "name": "LogRemovedAdmin",
+          "type": "event"
+        },
+        "0x843a5676feae31ef8b28965dd36ed106e325853979413261870b199fb91c7c4a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "manager",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "price",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "stock",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogAddProduct",
+          "type": "event"
+        },
+        "0x9fe0bc5fd561125601fbf63ed4b68c5f6fc05316378a291a8279e433bc259cdc": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "manager",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "price",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "stock",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogRemovedProduct",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xe13fa0bbed67fd6f116440e8d792438a5dc58397",
+      "updated_at": 1504310314782
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1503970589024
+  "updated_at": 1504310314782
 }
 };
 
@@ -15863,7 +16352,7 @@ window.addEventListener('load', function() {
 
                                                                 
 
-  [Migrations,Storefront].forEach(function(contract) {         
+  [Administrable,Migrations,Ownable,PullPayment,SafeMath,Storefront].forEach(function(contract) {         
 
     contract.setProvider(window.web3.currentProvider);          
 
@@ -16212,7 +16701,6 @@ minFrac:2,minInt:1,negPre:"-\u00a4",negSuf:"",posPre:"\u00a4",posSuf:""}]},id:"e
 //# sourceMappingURL=angular.min.js.map
 
 
-
 var app = angular.module('storefrontApp', []);
 
 app.config(function($locationProvider){
@@ -16227,6 +16715,10 @@ app.controller("storefrontController",
 
 	function($scope, $location, $http, $q, $window, $timeout) {
 
+		//
+		// Function declarations
+		//
+
 		$scope.formatProductData = function(){
 			$scope.formattedProducts = [];
 			$scope.productLog.forEach(function(element){
@@ -16234,7 +16726,6 @@ app.controller("storefrontController",
 				product.id = element.args.id.toString(10);
 				product.price = element.args.price.toString(10);
 				product.stock = element.args.stock.toString(10);
-				product.quantity = 0;
 				$scope.formattedProducts.push(product);
 			});
 		}	
@@ -16245,19 +16736,104 @@ app.controller("storefrontController",
 					element.stock = newStockCount;
 				}
 			});
+		} 
+
+		$scope.addAdmin = function(){
+			//check that new admin is a valid address
+			// if(!newAdmin instanceof address) alert("Please enter a valid ethereum address"); return;
+
+			var admin = $scope.newAdmin;
+			$scope.newAdmin = 0;
+			$scope.contract.addAdmin(admin, {from:$scope.account});
+		};
+
+		$scope.purchaseProduct = function() {
+			for(var i = 0; i < $scope.formattedProducts.length; i++){
+				var product = $scope.formattedProducts[i];
+				var totalCost = product.price * product.quantity;
+				var amount = product.quantity;
+				product.quantity = 0;
+				if(amount === 0) continue;
+				$scope.contract.purchaseProduct(parseInt(product.id), parseInt(amount), {from:$scope.account, value: totalCost})
+				.then(function(txn){
+					//$scope.$apply();
+				});
+			};
+		};
+
+		$scope.addProduct = function() {
+			var price = parseInt($scope.price);
+			var stock = parseInt($scope.stock);
+			var id = Date.now(); // anything unique
+			$scope.price = 0;
+			$scope.stock = 0;
+			if(parseInt(price) <= 0){ alert("Please enter a valid product price"); return;}
+			if(parseInt(stock) < 0){ alert("Please enter an item stock quantity greater than 0."); return;}
+
+			$scope.contract.addProduct(price, stock, id, {from:$scope.account, gas: 900000})
+			 .then(function(txn){
+			 	//console.log("product added !! txn receipt", txn);
+			 });
 		}
+
+		$scope.removeProduct = function() {
+			var id = parseInt($scope.toRemoveId);
+			$scope.toRemoveId = "";
+			$scope.contract.removeProduct(id, {from:$scope.account})
+		}
+
+		$scope.getCurrentBlockNumber = function(){
+			web3.eth.getBlockNumber(function(err, bn){
+				if(err) {
+					console.log('error', err);
+				} else {
+					console.log('current block:', bn);
+					$scope.blockNumber = bn;
+					$scope.$apply();
+				}
+			});
+		}
+
+		$scope.getOwnerStatus = function() {
+			return $scope.contract.owner({from: $scope.account})
+			.then(function(_owner){
+				$scope.isOwner = (_owner === $scope.account);
+				console.log("i am the contract owner:", $scope.isOwner);
+				$scope.$apply();
+				return $scope.getAdminStatus();
+			});
+		}
+
+		$scope.getAdminStatus = function(){
+			return $scope.contract.getUserIsAdmin({from: $scope.account})
+			.then(function(_admins){
+				console.log("admins", _admins);
+				$scope.isAdmin = _admins;
+				$scope.$apply();
+			});
+		}
+
+		//
+		// Ininitialize data structures
+		//
 
 		$scope.productLog = [];
 		$scope.purchaseLog = [];
 		$scope.adminLog = [];
 		$scope.formatProductData();
 
+
+		//
+		// Contract specific setup
+		//
+
 		Storefront.deployed()
 		.then(function(_instance){
 			$scope.contract = _instance;
 			console.log("The contract:", $scope.contract);
 
-			$scope.addProductPriceWatcher = $scope.contract.LogAddProduct({}, {fromBlock: 0})
+			// product added watcher
+			$scope.addProductWatcher = $scope.contract.LogAddProduct({}, {fromBlock: 0})
 			.watch(function(err, newProduct){
 				if(err) {
 					console.log("error watching new products price", err);
@@ -16265,9 +16841,11 @@ app.controller("storefrontController",
 					console.log("new product", newProduct);
 					$scope.productLog.push(newProduct);
 					$scope.formatProductData();
+					$scope.$apply();
 				}
 			});
 
+			// product purchased watcher
 			$scope.addProductPurchasedWatcher = $scope.contract.LogPurchase({}, {fromBlock: 0})
 			.watch(function(err, newPurchase){
 				if(err) {
@@ -16276,8 +16854,30 @@ app.controller("storefrontController",
 					console.log("new purchase", newPurchase);
 					$scope.purchaseLog.push(newPurchase);
 					$scope.updateProductData(newPurchase.args.id.toString(10), newPurchase.args.stock.toString(10));
+					$scope.$apply();
 				}
 			});
+
+			$scope.addProductRemovedWatcher = $scope.contract.LogRemovedProduct({}, {fromBlock: 0})
+			.watch(function(err, removedProduct){
+				if(err){
+					console.log("error watching removed product", err);
+				} else {
+					console.log("product removed", removedProduct);
+					console.log($scope);
+					var index;
+					$scope.formattedProducts.forEach(function(element, _index){
+						if(element.id === removedProduct.args.id.toString(10)){
+							index = _index;
+						};
+					});
+					console.log('index',index);
+					console.log('removed product id',removedProduct.args.id.toString(10));
+					$scope.productLog.splice(index, 1);
+					$scope.formatProductData();
+					$scope.$apply();
+				}
+			})
 
 			$scope.addAdminWatcher = $scope.contract.LogNewAdmin({}, {fromBlock: 0})
 			.watch(function(err, newAdmin){
@@ -16292,97 +16892,28 @@ app.controller("storefrontController",
 			return $scope.getOwnerStatus();
 		});
 
-	// ToDO:
-	//
-	// make add admin function more robust
 
-	$scope.addAdmin = function(){
-		//check that new admin is a valid address
-		// if(!newAdmin instanceof address) alert("Please enter a valid ethereum address"); return;
-		var admin = $scope.newAdmin;
-		$scope.newAdmin = 0;
-		$scope.contract.addAdmin(admin, {from:$scope.account});
-	};
-
-	$scope.purchaseProduct = function() {
-		for(var i = 0; i < $scope.formattedProducts.length; i++){
-			var product = $scope.formattedProducts[i];
-			var totalCost = product.price * product.quantity;
-			var amount = product.quantity;
-			product.quantity = 0;
-			if(amount === 0) continue;
-			console.log(amount, product.id);
-			$scope.contract.purchaseProduct(parseInt(product.id), parseInt(amount), {from:$scope.account, value: totalCost});
-		};
-	};
-
-	$scope.addProduct = function() {
-		var price = parseInt($scope.price);
-		var stock = parseInt($scope.stock);
-		$scope.price = 0;
-		$scope.stock = 0;
-		if(parseInt(price) <= 0){ alert("Please enter a valid product price"); return;}
-		if(parseInt(stock) < 0){ alert("Please enter an item stock quantity greater than 0."); return;}
-		$scope.contract.addProduct(parseInt(price), parseInt(stock), {from:$scope.account, gas: 900000})
-		 .then(function(txn){
-		 	//console.log("product added !! txn receipt", txn);
-		 });
-	};
-
-	// get block number
-	$scope.getCurrentBlockNumber = function(){
-		web3.eth.getBlockNumber(function(err, bn){
-			if(err) {
-				console.log('error', err);
-			} else {
-				console.log('current block:', bn);
-				$scope.blockNumber = bn;
-				$scope.$apply();
+		// work with first account
+		web3.eth.getAccounts(function(err, accs){
+			if(err != null){
+				alert("there was an error fetching your accounts.");
+				return;
 			}
-		});
-	}
+			if(accs.length == 0) {
+				alert("Couldn't find any accounts.");
+				return;
+			}
+			$scope.accounts = accs;
+			$scope.account = $scope.accounts[0];
+			console.log("using account", $scope.account);
 
-	$scope.getOwnerStatus = function() {
-		return $scope.contract.owner({from: $scope.account})
-		.then(function(_owner){
-			$scope.isOwner = (_owner === $scope.account);
-			console.log("i am the contract owner:", $scope.isOwner);
-			$scope.$apply();
-			return $scope.getAdminStatus();
-		});
-	}
-
-	$scope.getAdminStatus = function(){
-		return $scope.contract.getAdmin({from: $scope.account})
-		.then(function(_admins){
-			console.log("admins", _admins);
-			$scope.isAdmin = _admins;
-			$scope.$apply();
-		});
-	}
-
-	//work with first account
-	web3.eth.getAccounts(function(err, accs){
-		if(err != null){
-			alert("there was an error fetching your accounts.");
-			return;
-		}
-		if(accs.length == 0) {
-			alert("Couldn't find any accounts.");
-			return;
-		}
-		$scope.accounts = accs;
-		$scope.account = $scope.accounts[0];
-		console.log("using account", $scope.account);
-
-		web3.eth.getBalance($scope.account, function(err, _balance){
-			$scope.balance = _balance.toString(10);
-			console.log("balance", $scope.balance);
-			$scope.balanceInEth = web3.fromWei($scope.balance, "ether");
-			$scope.$apply();
-			//return $scope.contract.owner({from: $scope.account});
-		});
-
-	});	
+			web3.eth.getBalance($scope.account, function(err, _balance){
+				$scope.balance = _balance.toString(10);
+				console.log("balance", $scope.balance);
+				$scope.balanceInEth = web3.fromWei($scope.balance, "ether");
+				$scope.$apply();
+				//return $scope.contract.owner({from: $scope.account});
+			});
+		});	
 
 }]);
