@@ -4,8 +4,9 @@ import './Ownable.sol';
 import './PullPayment.sol';
 import './SafeMath.sol';
 import './Administrable.sol';
+import './Stoppable.sol';
 
-contract Storefront is Ownable, Administrable, PullPayment {
+contract Storefront is Ownable, Administrable, PullPayment, Stoppable {
 	using SafeMath for uint256;
 
 	struct Product {
