@@ -13,6 +13,69 @@ app.controller("storefrontController",
 
 	function($scope, $location, $http, $q, $window, $timeout) {
 
+		var hub;
+	  	Hub.deployed().then(function(instance) {
+	    	hub = instance;
+	    	newStorefrontWatcher = watchForNewStores();
+	  	});
+
+	  	$scope.stores = [];      // array of store structs
+	  	$scope.storeIndex = {};  // row pointers
+	  	$scope.newStore = {};    // new storefront
+	  	$scope.ownedStores = []; // array of store structs
+	  	$scope.newProduct = {};  // new product       
+	  	$scope.storeSelected;
+	  	$scope.productSelected;  
+	  	$scope.storeLog = [];    // verbose on-screen display of logs
+
+	  	$scope.setAccount = function(){
+	  		$scope.account = $scope.accountSelected;
+	  		$scope.balance = web3.getBalance($scope.account).toString(10);
+	  		var numberOfStores = $scope.stores.length;
+
+	  		// update UI options based on the account selected
+	  		// manage stores for which this accound is the owner
+
+	  		// display all of the stores they manage/ show add/remove product options
+
+	  		console.log("Using account:", $scope.account);
+	  	}
+
+	  	$scope.newStore = function(){};
+
+	  	$scope.addProduct = function(){};
+
+	  	$scope.removeProduct = function(){};
+
+	  	$scope.purchaseProduct = function(){};
+
+	  	function watchForNewStores() {
+	  		hub.LogNewStorefront( {}, {fromBlock: 0})
+	  		.watch(function(err, newStore){
+	  			if(err){
+	  				console.log("Store error: ", err);
+	  			} else {
+	  				console.log("New store:", newStore);
+
+	  			}
+	  		});
+	  	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		//
 		// Function declarations
 		//
@@ -125,70 +188,70 @@ app.controller("storefrontController",
 		// Contract specific setup
 		//
 
-		Storefront.deployed()
-		.then(function(_instance){
-			$scope.contract = _instance;
-			console.log("The contract:", $scope.contract);
+		// Storefront.deployed()
+		// .then(function(_instance){
+		// 	$scope.contract = _instance;
+		// 	console.log("The contract:", $scope.contract);
 
-			// product added watcher
-			$scope.addProductWatcher = $scope.contract.LogAddProduct({}, {fromBlock: 0})
-			.watch(function(err, newProduct){
-				if(err) {
-					console.log("error watching new products price", err);
-				} else {
-					console.log("new product", newProduct);
-					$scope.productLog.push(newProduct);
-					$scope.formatProductData();
-					$scope.$apply();
-				}
-			});
+		// 	// product added watcher
+		// 	$scope.addProductWatcher = $scope.contract.LogAddProduct({}, {fromBlock: 0})
+		// 	.watch(function(err, newProduct){
+		// 		if(err) {
+		// 			console.log("error watching new products price", err);
+		// 		} else {
+		// 			console.log("new product", newProduct);
+		// 			$scope.productLog.push(newProduct);
+		// 			$scope.formatProductData();
+		// 			$scope.$apply();
+		// 		}
+		// 	});
 
-			// product purchased watcher
-			$scope.addProductPurchasedWatcher = $scope.contract.LogPurchase({}, {fromBlock: 0})
-			.watch(function(err, newPurchase){
-				if(err) {
-					console.log("error watching purchase", err);
-				} else {
-					console.log("new purchase", newPurchase);
-					$scope.purchaseLog.push(newPurchase);
-					$scope.updateProductData(newPurchase.args.id.toString(10), newPurchase.args.stock.toString(10));
-					$scope.$apply();
-				}
-			});
+		// 	// product purchased watcher
+		// 	$scope.addProductPurchasedWatcher = $scope.contract.LogPurchase({}, {fromBlock: 0})
+		// 	.watch(function(err, newPurchase){
+		// 		if(err) {
+		// 			console.log("error watching purchase", err);
+		// 		} else {
+		// 			console.log("new purchase", newPurchase);
+		// 			$scope.purchaseLog.push(newPurchase);
+		// 			$scope.updateProductData(newPurchase.args.id.toString(10), newPurchase.args.stock.toString(10));
+		// 			$scope.$apply();
+		// 		}
+		// 	});
 
-			$scope.addProductRemovedWatcher = $scope.contract.LogRemovedProduct({}, {fromBlock: 0})
-			.watch(function(err, removedProduct){
-				if(err){
-					console.log("error watching removed product", err);
-				} else {
-					console.log("product removed", removedProduct);
-					console.log($scope);
-					var index;
-					$scope.formattedProducts.forEach(function(element, _index){
-						if(element.id === removedProduct.args.id.toString(10)){
-							index = _index;
-						};
-					});
-					console.log('index',index);
-					console.log('removed product id',removedProduct.args.id.toString(10));
-					$scope.productLog.splice(index, 1);
-					$scope.formatProductData();
-					$scope.$apply();
-				}
-			})
+		// 	$scope.addProductRemovedWatcher = $scope.contract.LogRemovedProduct({}, {fromBlock: 0})
+		// 	.watch(function(err, removedProduct){
+		// 		if(err){
+		// 			console.log("error watching removed product", err);
+		// 		} else {
+		// 			console.log("product removed", removedProduct);
+		// 			console.log($scope);
+		// 			var index;
+		// 			$scope.formattedProducts.forEach(function(element, _index){
+		// 				if(element.id === removedProduct.args.id.toString(10)){
+		// 					index = _index;
+		// 				};
+		// 			});
+		// 			console.log('index',index);
+		// 			console.log('removed product id',removedProduct.args.id.toString(10));
+		// 			$scope.productLog.splice(index, 1);
+		// 			$scope.formatProductData();
+		// 			$scope.$apply();
+		// 		}
+		// 	})
 
-			$scope.addAdminWatcher = $scope.contract.LogNewAdmin({}, {fromBlock: 0})
-			.watch(function(err, newAdmin){
-				if(err) {
-					console.log("error watching purchase", err);
-				} else {
-					console.log("new admin", newAdmin);
-					$scope.adminLog.push(newAdmin);
-				}
-			});
+		// 	$scope.addAdminWatcher = $scope.contract.LogNewAdmin({}, {fromBlock: 0})
+		// 	.watch(function(err, newAdmin){
+		// 		if(err) {
+		// 			console.log("error watching purchase", err);
+		// 		} else {
+		// 			console.log("new admin", newAdmin);
+		// 			$scope.adminLog.push(newAdmin);
+		// 		}
+		// 	});
 
-			return $scope.getOwnerStatus();
-		});
+		// 	return $scope.getOwnerStatus();
+		// });
 
 
 		// work with first account
@@ -203,15 +266,8 @@ app.controller("storefrontController",
 			}
 			$scope.accounts = accs;
 			$scope.account = $scope.accounts[0];
+			$scope.balance = web3.getBalance($scope.account).toString(10);
 			console.log("using account", $scope.account);
-
-			web3.eth.getBalance($scope.account, function(err, _balance){
-				$scope.balance = _balance.toString(10);
-				console.log("balance", $scope.balance);
-				$scope.balanceInEth = web3.fromWei($scope.balance, "ether");
-				$scope.$apply();
-				//return $scope.contract.owner({from: $scope.account});
-			});
 		});	
 
 }]);

@@ -15,7 +15,8 @@ contract Storefront is Ownable, Administrable, PullPayment, Stoppable {
 		address manager;
 	}
 
-	mapping(uint => Product) public products;
+	Product[] public products;
+	mapping(uint => uint) public productLocation;
 
 	event LogAddProduct(uint id, address manager, uint price, uint stock);
 	event LogRemovedProduct(uint id, address manager, uint price, uint stock);
@@ -23,6 +24,14 @@ contract Storefront is Ownable, Administrable, PullPayment, Stoppable {
 
 	//constructor
 	function Storefront(){
+	}
+
+	function getProductsLength()
+		public
+		constant
+		returns(uint length)
+	{
+		return(products.length);
 	}
 
 	function addProduct(uint price, uint stock, uint id)

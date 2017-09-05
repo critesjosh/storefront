@@ -22,7 +22,47 @@
 
 		<p>How it works:</p>
 		<p>Admins can add and remove products. Send me a tweet @critesjosh_ and I'll add your address to be an admin.</p>
-		<p>Anyone can purchase products (as long as you have enough ethereum in your account).
+		<p>Anyone can purchase products (as long as you have enough ethereum in your account).</p>
+
+
+		<table>
+          <tr>
+            <td>
+              <form id="StoreForm" ng-submit="newStore()">
+                <input type="submit" class="btn btn-primary addnew" value="New Store"></h3>
+              </form>
+            </td>
+            <td>        
+              <h3>
+                <form id="accountForm" ng-submit="setAccount()">
+                  &nbsp;
+                  <select name="account" ng-model="accountSelected" required>
+                    <option ng-repeat="account in accounts" value="{{ account }}">
+                    {{ account }}
+                    </option>
+                  </select>
+                  <input type="submit" class="btn btn-primary" value="Select Account"></h3>
+                </form>
+              </h3>
+            </td>
+          </tr>
+        </table>
+
+        <form>
+        	<select name="store" ng-model="storeSelected" required>
+        		<option ng-repeat="store in ownedStores" value="{{ store }}">
+        		{{ store }}
+        		</option>
+        	</select>
+        	<input type="submit" class="btn btn-primary" value="Select Storefront">
+        </form>
+
+
+
+
+
+
+        
 
 			<form id="addAdminForm" ng-submit="addAdmin()" ng-show="isOwner">
 				<input type="text" name="newAdmin" ng-model="newAdmin" required placeholder="New admin address"/>
