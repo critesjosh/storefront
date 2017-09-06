@@ -25,13 +25,12 @@ app.controller("storefrontController",
 	  	txn = {};
 	  	$scope.stores = [];      // array of store structs
 	  	$scope.storeIndex = {};  // row pointers
-	  	$scope.newStore = {};    // new storefront
-	  	$scope.ownedStores = []; // array of store structs
-	  	$scope.newProduct = {};  // new product       
 	  	$scope.storeSelected;
-	  	$scope.productSelected;  
 	  	$scope.storeLog = [];    // verbose on-screen display of logs
-	  	$scope.storeOwners = {};
+
+	  	$scope.product = {};
+	  	$scope.productList = [];
+	  	$scope.productLog  = [];
 
 	  	$scope.setAccount = function(){
 	  		$scope.account = $scope.accountSelected;
@@ -51,49 +50,36 @@ app.controller("storefrontController",
 	  	}
 
 	  	$scope.newStore = function(){
-	  		hub.createStore({from: $scope.account})
-	  		.then(function(txn){
-	  			// if($scope.storeOwners[txn.args.storefrontCreator] === 'undefined'){
-	  			// 	$scope.storeOwners[txn.args.storefrontCreator] = [txn.args.storefrontAddress];
-	  			// } else {
-	  			// 	$scope.storeOwners[txn.args.storefrontCreator].push(txn.args.storefrontAddress);
-	  			// }
+	  		return hub.createStore({from: $scope.account})
+	  		.then(function(txn) {
+	  			console.log('store created: txn', txn);
 	  		});
 	  	};
 
-	  	$scope.editStore = function(){
-	  		var store = Storefront.at($scope.editStoreSelected);
-	  	}
-
 	  	$scope.addProduct = function(){
 	  		var store = Storefront.at($scope.editStoreSelected);
-			var price = parseInt($scope.newProductPrice);
-			var stock = parseInt($scope.newProductQuantity);
+			var price = parseInt($scope.product.price);
+			var stock = parseInt($scope.product.quantity);
 			var id = Date.now(); // anything unique
-			$scope.newProductPrice = 0;
-			$scope.newProductQuantity = 0;
+			$scope.product.price = 0;
+			$scope.product.quantity = 0;
 			if(parseInt(price) <= 0){ alert("Please enter a valid product price"); return;}
 			if(parseInt(stock) < 0){ alert("Please enter an item stock quantity greater than 0."); return;}
 
-			store.addProduct(price, stock, id, {from:$scope.account, gas: 90000})
+			console.log($scope.editStoreSelected);
+
+			return store.addProduct(price, stock, id, {from:$scope.account, gas: 900000})
 			 .then(function(txn){
 			 	console.log("product added !! txn receipt", txn);
+			 	return;
 			 });
 	  	};
-
-	  	$scope.removeProduct = function(){};
 
 	  	$scope.shopAtStore = function() {
 	  		var store = Storefront.at($scope.shopStoreSelected);
 	  		console.log(store);
-	  		store.products[0].call({from: $scope.account})
-	  		.then((result) => {
-	  			console.log(result);
-	  		});
 
 	  	};
-
-	  	$scope.purchaseProduct = function(){};
 
 	  	function watchForNewStores() {
 	  		hub.LogNewStorefront( {}, {fromBlock: 0})
@@ -107,86 +93,62 @@ app.controller("storefrontController",
 	  					$scope.stores.push(newStore);
 	  					txn[newStore.transactionHash] = true;
 	  					upsertStore(newStore.args.storefrontAddress);
-	  					$scope.$apply();
 	  				}
 	  			}
 	  		});
 	  	}
 
+	  	function watchForNewProducts(storefrontAddress) {
+	  		var store = Storefront.at(storefrontAddress);
+	  		console.log("store watcher at", storefrontAddress);
+	  		var newProductWatcher = store.LogAddProduct({}, {fromBlock: 0})
+	  		.watch(function(err, newProduct){
+	  			if(err) {
+	  				console.log('product watcher error', err);
+	  			} else {
+	  				console.log('New Product', newProduct);
+	  				$scope.productList.push(newProduct.args);
+	  				upsertStore(storefrontAddress);
+	  			}
+	  		});
+	  	};
+
 	  	function upsertStore(address) {
 	  		console.log("upserting store", address);
 	  		var store = Storefront.at(address);
 
+	  		var running;
+	  		var numberOfProducts;
+	  		var products;
+
+	  		return store.running.call({from: $scope.account})
+	  		.then(function(isRunning){
+	  			console.log(isRunning);
+	  			running = isRunning;
+	  			return store.getProductArrayLength.call();
+	  		})
+	  		.then(function(number){
+	  			console.log(number.toString(10));
+
+		  		var s = {};
+		  		s.store = address;
+		  		s.running = running;
+
+		  		if(typeof($scope.storeIndex[address] === 'undefined')){
+		          	$scope.storeIndex[s.store] = $scope.stores.length;
+		          	$scope.stores.push(s);
+		          	var addProductWatcher = watchForNewProducts(address);
+		          	$scope.$apply();
+		  		} else {
+		  			var index = $scope.storeIndex[s.store];
+		  			$scope.store[index].running = s.running;
+		  			$scope.$apply();
+		  		}
+
+		  		console.log($scope);
+	  		});
+
 	  	}
-
-
-		$scope.getCurrentBlockNumber = function(){
-			web3.eth.getBlockNumber(function(err, bn){
-				if(err) {
-					console.log('error', err);
-				} else {
-					console.log('current block:', bn);
-					$scope.blockNumber = bn;
-					$scope.$apply();
-				}
-			});
-		}
-
-		$scope.getOwnerStatus = function() {
-			return $scope.contract.owner({from: $scope.account})
-			.then(function(_owner){
-				$scope.isOwner = (_owner === $scope.account);
-				console.log("i am the contract owner:", $scope.isOwner);
-				$scope.$apply();
-				return $scope.getAdminStatus();
-			});
-		}
-
-		$scope.getAdminStatus = function(){
-			return $scope.contract.getUserIsAdmin({from: $scope.account})
-			.then(function(_admins){
-				console.log("admins", _admins);
-				$scope.isAdmin = _admins;
-				$scope.$apply();
-			});
-		}
-
-		// if(typeof(mist) !== "undefined") {
-
-		// 	mist.requestAccountPromise = function() {
-		// 		return new Promise (function(resolve, reject) {
-		// 			mist.requestAccount(function(e, accounts) {
-		// 				if(e != null) {
-		// 					reject(e);
-		// 				} else {
-		// 					resolve(accounts);
-		// 				}
-		// 			});
-		// 		});
-		// 	};
-
-		// 	mist.requestBalancePromise = function(){
-		// 		return new Promise(function(resolve, reject) {
-		// 			web3.eth.getBalance(function(err, balance) {
-		// 				if(e != null) {
-		// 					reject(e);
-		// 				} else {
-		// 					resolve(balance);
-		// 				}
-		// 			});
-		// 		});
-		// 	};
-
-		// 	mist.requestAccountPromise().then((accounts) => {
-		// 		console.log(accounts);
-		// 		$scope.accounts = accounts;
-		// 		$scope.account = $scope.accounts[0];
-		// 		return mist.requestBalancePromise();
-		// 	}).then((balance) => {
-		// 		console.log(balance);
-		// 	})
-		// } else {
-
 
 		requestAccountPromise = function() {
 			return new Promise (function(resolve, reject) {
@@ -222,6 +184,5 @@ app.controller("storefrontController",
 			$scope.balance = balance;
 			$scope.$apply();
 		});				
-
 
 }]);

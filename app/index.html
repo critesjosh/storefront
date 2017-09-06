@@ -56,9 +56,9 @@
         	<input type="submit" class="btn btn-primary" value="Select Storefront">
         </form>
 
-        <form ng-submit="addProduct()" ng-if="editStoreSelected" >
-        	<input ng-model="newProductQuantity" type="text" required placeholder="Quantity" />
-        	<input ng-model="newProductPrice" type="text" required placeholder="Price (wei)" />
+        <form id="addProductForm" ng-submit="addProduct()" ng-if="editStoreSelected" >
+        	<input type="text" ng-model="product.quantity" required placeholder="Quantity" />
+        	<input type="text" ng-model="product.price"  required placeholder="Price (wei)" />
         	<input type="submit" class="btn btn-primary" value="Add Product">
         </form>
 
@@ -70,6 +70,16 @@
         	</select>
         	<input type="submit" class="btn btn-primary" value="Shop Here">
         </form>
+
+        <p>Products</p>
+        <div ng-repeat="product in productList">
+        {{product}}
+        </div>
+
+        <p>Logs: </p>
+        <div ng-repeat="log in storeLog">
+        {{log}}
+        </div>
 
 
 		</div>

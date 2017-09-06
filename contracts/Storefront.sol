@@ -10,26 +10,34 @@ contract Storefront is Administrable, PullPayment, Stoppable {
 	struct Product {
 		uint price;
 		uint stock;
-		address manager;
 	}
 
-	Product[] public products;
-	mapping(uint => uint) public productLocation;
+	address public manager;
+	uint[] public productIds;
+	mapping(uint => Product) public products;
 
-	event LogAddProduct(uint id, address manager, uint price, uint stock);
-	event LogRemovedProduct(uint id, address manager, uint price, uint stock);
+	event LogAddProduct(uint id, uint price, uint stock);
+	event LogRemovedProduct(uint id, uint price, uint stock);
 	event LogPurchase(address purchaser, uint id, uint price, uint quantity, uint stock);
 
 	//constructor
 	function Storefront(){
 	}
 
-	function getProductsLength()
-		public
+	function getProductArrayLength()
 		constant
-		returns(uint length)
+		public
+		returns(uint)
 	{
-		return(products.length);
+		return productIds.length;
+	}
+
+	function getProduct(uint id)
+		constant
+		public
+		returns(uint price, uint stock)
+	{
+		return(products[id].price, products[id].stock);
 	}
 
 	function addProduct(uint price, uint stock, uint id)
@@ -37,12 +45,12 @@ contract Storefront is Administrable, PullPayment, Stoppable {
 		public
 		returns(bool success)
 	{
+		//require(products[id].price == 0);
 		require(price > 0);
 		require(stock >= 0);
-		uint length = getProductsLength();
-		productLocation[id] = length;
-		products.push(Product(price, stock, msg.sender));
-		LogAddProduct(id, msg.sender, price, stock);
+		products[id] = Product(price, stock);
+		productIds.push(id);
+		LogAddProduct(id, price, stock);
 		return true;
 	}
 
@@ -51,17 +59,16 @@ contract Storefront is Administrable, PullPayment, Stoppable {
 		payable
 		returns(bool success)
 	{
-		uint index = productLocation[id];
-		require(products[index].stock >= quantity);
-		uint totalCost = products[index].price.mul(quantity);
+		require(products[id].stock >= quantity);
+		uint totalCost = products[id].price.mul(quantity);
 		require(msg.value >= totalCost);
 
 		uint amountToReturn = msg.value.sub(totalCost);
 		PullPayment.asyncSend(this, totalCost); 
 
-		products[index].stock -= quantity;
+		products[id].stock -= quantity;
 		msg.sender.transfer(amountToReturn); //return any overpayment
-		LogPurchase(msg.sender, id, products[index].price, quantity, products[index].stock);
+		LogPurchase(msg.sender, id, products[id].price, quantity, products[id].stock);
 		return true;
 	}
 
@@ -73,13 +80,11 @@ contract Storefront is Administrable, PullPayment, Stoppable {
 		returns(bool success)
 	{
 		// remove a product from the list
-		uint index = productLocation[id];
-		require(products[index].price != 0 && products[index].stock != 0); // make sure the prodcut has been added
-		uint stock = products[index].stock;
-		uint price = products[index].price;
-		address manager = products[id].manager;
-		products[id] = Product(0,0,0);  // set to the uninitialized state
-		LogRemovedProduct(id, manager, price, stock);
+		require(products[id].price != 0 && products[id].stock != 0); // make sure the prodcut has been added
+		uint stock = products[id].stock;
+		uint price = products[id].price;
+		products[id] = Product(0,0);  // set to the uninitialized state
+		LogRemovedProduct(id, price, stock);
 		return true;
 	}
 

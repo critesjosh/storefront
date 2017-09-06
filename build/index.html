@@ -22,39 +22,66 @@
 		<h1>Etherbay</h1>
 		<h2>Sell your stuff via the ethereum blockchain</h2>
 
-		<p>How it works:</p>
-		<p>Admins can add and remove products. Send me a tweet @critesjosh_ and I'll add your address to be an admin.</p>
-		<p>Anyone can purchase products (as long as you have enough ethereum in your account).</p>
+		<p>Account: {{account}}</p>
+		<p>Balance: {{balance}}</p>
 
-			<form id="addAdminForm" ng-submit="addAdmin()" ng-show="isOwner">
-				<input type="text" name="newAdmin" ng-model="newAdmin" required placeholder="New admin address"/>
-				<input type="submit" class="btn btn-primary" value="Add Admin"/>
-			</form>
 
-			<form id="addProductForm" ng-submit="addProduct()" ng-show="isAdmin">
-				<input type="text" name="price" ng-model="price" required placeholder="Price (in wei)" />
-				<input type="text" name="stock" ng-model="stock" required placeholder="Amount in stock" />
-				<input type="submit" class="btn btn-primary" value="Add Product"/>
-			</form>
+		<table>
+          <tr>
+            <td>
+              <form id="StoreForm" ng-submit="newStore()">
+                <input type="submit" class="btn btn-primary addnew" value="New Store"></h3>
+              </form>
+            </td>
+            <td>        
+              <h3>
+                <form id="accountForm" ng-submit="setAccount()">
+                  &nbsp;
+                  <select name="account" ng-model="accountSelected" required>
+                    <option ng-repeat="account in accounts" value="{{ account }}">
+                    {{ account }}
+                    </option>
+                  </select>
+                  <input type="submit" class="btn btn-primary" value="Select Account"></h3>
+                </form>
+              </h3>
+            </td>
+          </tr>
+        </table>
 
-			<form ng-submit="removeProduct()" ng-show="isAdmin">
-				<input type="text" ng-model="toRemoveId" required placeholder="ID of product to remove"/>
-				<input type="submit" class="btn btn-danger" value="Remove Product"/>
-			</form>
+        <form ng-submit="editStore()">
+        	<select name="store" ng-model="editStoreSelected" required>
+        		<option ng-repeat="store in stores" value="{{ store.args.storefrontAddress }}">
+        		{{ store.args.storefrontAddress }}
+        		</option>
+        	</select>
+        	<input type="submit" class="btn btn-primary" value="Select Storefront">
+        </form>
 
-			<div class="control-group" ng-repeat="product in formattedProducts track by $index">
-				<div style="border:1px solid grey">
-					<div>Product ID: {{ product.id }}</div>
-					<div>Price: {{ product.price }} (wei)</div>
-					<div>Amount in stock: {{ product.stock }}</div>
-					<form class="controls">
-						Quantity to purchase: <input type="text" name="quantity" ng-model="product.quantity" required />
-					</form>
-				</div>
-				<br>
-			</div>
+        <form id="addProductForm" ng-submit="addProduct()" ng-if="editStoreSelected" >
+        	<input type="text" ng-model="product.quantity" required placeholder="Quantity" />
+        	<input type="text" ng-model="product.price"  required placeholder="Price (wei)" />
+        	<input type="submit" class="btn btn-primary" value="Add Product">
+        </form>
 
-			<input type="submit" class="btn btn-success" ng-click="purchaseProduct()" value="Purchase"/>
+        <form ng-submit="shopAtStore()">
+        	<select name="store" ng-model="shopStoreSelected" required>
+        		<option ng-repeat="store in stores" value="{{ store.args.storefrontAddress }}">
+        		{{ store.args.storefrontAddress }}
+        		</option>
+        	</select>
+        	<input type="submit" class="btn btn-primary" value="Shop Here">
+        </form>
+
+        <p>Products</p>
+        <div ng-repeat="product in productList">
+        {{product}}
+        </div>
+
+        <p>Logs: </p>
+        <div ng-repeat="log in storeLog">
+        {{log}}
+        </div>
 
 
 		</div>
