@@ -9,12 +9,12 @@
 
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 
 <script src="./app.js"></script>
 </head>
-<body ng-cloak ng-controller="storefrontController">
-
+<body ng-cloak ng-app="storefrontApp">
+<div ng-controller="storefrontController">
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
@@ -24,7 +24,7 @@
 
 		<p>How it works:</p>
 		<p>Admins can add and remove products. Send me a tweet @critesjosh_ and I'll add your address to be an admin.</p>
-		<p>Anyone can purchase products (as long as you have enough ethereum in your account).
+		<p>Anyone can purchase products (as long as you have enough ethereum in your account).</p>
 
 			<form id="addAdminForm" ng-submit="addAdmin()" ng-show="isOwner">
 				<input type="text" name="newAdmin" ng-model="newAdmin" required placeholder="New admin address"/>
@@ -60,10 +60,11 @@
 		</div>
 	</div>
 </div>
+</div>
 <script>
-window.addEventListener('load', function(){
-	angular.bootstrap(document, ['storefrontApp']);
-});
+// window.addEventListener('load', function(){
+// 	angular.bootstrap(document, ['storefrontApp']);
+// });
 	</script>
 
 </body>

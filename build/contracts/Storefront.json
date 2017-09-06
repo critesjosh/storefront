@@ -1431,8 +1431,146 @@
       "links": {},
       "address": "0xe13fa0bbed67fd6f116440e8d792438a5dc58397",
       "updated_at": 1504310314782
+    },
+    "1504356407814": {
+      "events": {
+        "0x843a5676feae31ef8b28965dd36ed106e325853979413261870b199fb91c7c4a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "manager",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "price",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "stock",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogAddProduct",
+          "type": "event"
+        },
+        "0x9fe0bc5fd561125601fbf63ed4b68c5f6fc05316378a291a8279e433bc259cdc": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "manager",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "price",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "stock",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogRemovedProduct",
+          "type": "event"
+        },
+        "0x634aeed90381b623ce040ab7230502291b9894f1059114992c97f1577ec9b923": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "purchaser",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "price",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "quantity",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "stock",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogPurchase",
+          "type": "event"
+        },
+        "0xb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e91": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "payment",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x39e7d4b9ba48f55a740a5192809dbc498fa12724c030b37dab126a3f6774c0f3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "address1",
+              "type": "address"
+            }
+          ],
+          "name": "LogNewAdmin",
+          "type": "event"
+        },
+        "0xe6e9128d95298888c459545040e07936d4c97dd2fea5e367bd1bfb7d90b6cf82": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "address1",
+              "type": "address"
+            }
+          ],
+          "name": "LogRemovedAdmin",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x12dac6022623bbff92d247850b9b5ba3464a4188",
+      "updated_at": 1504356706833
     }
   },
   "schema_version": "0.0.5",
+<<<<<<< Updated upstream
   "updated_at": 1504640471299
+=======
+  "updated_at": 1504356706833
+>>>>>>> Stashed changes
 }

@@ -1,3 +1,6 @@
+// var Connect = require('uport-connect').Connect;
+// var SimpleSigner = require('uport-connect').SimpleSigner;
+// var angular = require('angular');
 
 var app = angular.module('storefrontApp', []);
 
@@ -19,6 +22,7 @@ app.controller("storefrontController",
 	    	newStorefrontWatcher = watchForNewStores();
 	  	});
 
+	  	txn = {};
 	  	$scope.stores = [];      // array of store structs
 	  	$scope.storeIndex = {};  // row pointers
 	  	$scope.newStore = {};    // new storefront
@@ -27,10 +31,15 @@ app.controller("storefrontController",
 	  	$scope.storeSelected;
 	  	$scope.productSelected;  
 	  	$scope.storeLog = [];    // verbose on-screen display of logs
+	  	$scope.storeOwners = {};
 
 	  	$scope.setAccount = function(){
 	  		$scope.account = $scope.accountSelected;
-	  		$scope.balance = web3.getBalance($scope.account).toString(10);
+	  		requestBalancePromise()
+	  		.then((balance) => {
+	  			$scope.balance = balance;
+	  			$scope.$apply();
+	  		});
 	  		var numberOfStores = $scope.stores.length;
 
 	  		// update UI options based on the account selected
@@ -41,11 +50,48 @@ app.controller("storefrontController",
 	  		console.log("Using account:", $scope.account);
 	  	}
 
-	  	$scope.newStore = function(){};
+	  	$scope.newStore = function(){
+	  		hub.createStore({from: $scope.account})
+	  		.then(function(txn){
+	  			// if($scope.storeOwners[txn.args.storefrontCreator] === 'undefined'){
+	  			// 	$scope.storeOwners[txn.args.storefrontCreator] = [txn.args.storefrontAddress];
+	  			// } else {
+	  			// 	$scope.storeOwners[txn.args.storefrontCreator].push(txn.args.storefrontAddress);
+	  			// }
+	  		});
+	  	};
 
-	  	$scope.addProduct = function(){};
+	  	$scope.editStore = function(){
+	  		var store = Storefront.at($scope.editStoreSelected);
+	  	}
+
+	  	$scope.addProduct = function(){
+	  		var store = Storefront.at($scope.editStoreSelected);
+			var price = parseInt($scope.newProductPrice);
+			var stock = parseInt($scope.newProductQuantity);
+			var id = Date.now(); // anything unique
+			$scope.newProductPrice = 0;
+			$scope.newProductQuantity = 0;
+			if(parseInt(price) <= 0){ alert("Please enter a valid product price"); return;}
+			if(parseInt(stock) < 0){ alert("Please enter an item stock quantity greater than 0."); return;}
+
+			store.addProduct(price, stock, id, {from:$scope.account, gas: 90000})
+			 .then(function(txn){
+			 	console.log("product added !! txn receipt", txn);
+			 });
+	  	};
 
 	  	$scope.removeProduct = function(){};
+
+	  	$scope.shopAtStore = function() {
+	  		var store = Storefront.at($scope.shopStoreSelected);
+	  		console.log(store);
+	  		store.products[0].call({from: $scope.account})
+	  		.then((result) => {
+	  			console.log(result);
+	  		});
+
+	  	};
 
 	  	$scope.purchaseProduct = function(){};
 
@@ -56,92 +102,23 @@ app.controller("storefrontController",
 	  				console.log("Store error: ", err);
 	  			} else {
 	  				console.log("New store:", newStore);
-
+	  				if(typeof(txn[newStore.transactionHash]) == 'undefined') {
+	  					$scope.storeLog.push(newStore);
+	  					$scope.stores.push(newStore);
+	  					txn[newStore.transactionHash] = true;
+	  					upsertStore(newStore.args.storefrontAddress);
+	  					$scope.$apply();
+	  				}
 	  			}
 	  		});
 	  	}
 
+	  	function upsertStore(address) {
+	  		console.log("upserting store", address);
+	  		var store = Storefront.at(address);
 
+	  	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-		//
-		// Function declarations
-		//
-
-		$scope.formatProductData = function(){
-			$scope.formattedProducts = [];
-			$scope.productLog.forEach(function(element){
-				var product = {};
-				product.id = element.args.id.toString(10);
-				product.price = element.args.price.toString(10);
-				product.stock = element.args.stock.toString(10);
-				$scope.formattedProducts.push(product);
-			});
-		}	
-
-		$scope.updateProductData = function(productId, newStockCount){
-			$scope.formattedProducts.forEach(function(element){
-				if(element.id === productId){
-					element.stock = newStockCount;
-				}
-			});
-		} 
-
-		$scope.addAdmin = function(){
-			//check that new admin is a valid address
-			// if(!newAdmin instanceof address) alert("Please enter a valid ethereum address"); return;
-
-			var admin = $scope.newAdmin;
-			$scope.newAdmin = 0;
-			$scope.contract.addAdmin(admin, {from:$scope.account});
-		};
-
-		$scope.purchaseProduct = function() {
-			for(var i = 0; i < $scope.formattedProducts.length; i++){
-				var product = $scope.formattedProducts[i];
-				var totalCost = product.price * product.quantity;
-				var amount = product.quantity;
-				product.quantity = 0;
-				if(amount === 0) continue;
-				$scope.contract.purchaseProduct(parseInt(product.id), parseInt(amount), {from:$scope.account, value: totalCost})
-				.then(function(txn){
-					//$scope.$apply();
-				});
-			};
-		};
-
-		$scope.addProduct = function() {
-			var price = parseInt($scope.price);
-			var stock = parseInt($scope.stock);
-			var id = Date.now(); // anything unique
-			$scope.price = 0;
-			$scope.stock = 0;
-			if(parseInt(price) <= 0){ alert("Please enter a valid product price"); return;}
-			if(parseInt(stock) < 0){ alert("Please enter an item stock quantity greater than 0."); return;}
-
-			$scope.contract.addProduct(price, stock, id, {from:$scope.account, gas: 900000})
-			 .then(function(txn){
-			 	//console.log("product added !! txn receipt", txn);
-			 });
-		}
-
-		$scope.removeProduct = function() {
-			var id = parseInt($scope.toRemoveId);
-			$scope.toRemoveId = "";
-			$scope.contract.removeProduct(id, {from:$scope.account})
-		}
 
 		$scope.getCurrentBlockNumber = function(){
 			web3.eth.getBlockNumber(function(err, bn){
@@ -174,100 +151,77 @@ app.controller("storefrontController",
 			});
 		}
 
-		//
-		// Ininitialize data structures
-		//
+		// if(typeof(mist) !== "undefined") {
 
-		$scope.productLog = [];
-		$scope.purchaseLog = [];
-		$scope.adminLog = [];
-		$scope.formatProductData();
-
-
-		//
-		// Contract specific setup
-		//
-
-		// Storefront.deployed()
-		// .then(function(_instance){
-		// 	$scope.contract = _instance;
-		// 	console.log("The contract:", $scope.contract);
-
-		// 	// product added watcher
-		// 	$scope.addProductWatcher = $scope.contract.LogAddProduct({}, {fromBlock: 0})
-		// 	.watch(function(err, newProduct){
-		// 		if(err) {
-		// 			console.log("error watching new products price", err);
-		// 		} else {
-		// 			console.log("new product", newProduct);
-		// 			$scope.productLog.push(newProduct);
-		// 			$scope.formatProductData();
-		// 			$scope.$apply();
-		// 		}
-		// 	});
-
-		// 	// product purchased watcher
-		// 	$scope.addProductPurchasedWatcher = $scope.contract.LogPurchase({}, {fromBlock: 0})
-		// 	.watch(function(err, newPurchase){
-		// 		if(err) {
-		// 			console.log("error watching purchase", err);
-		// 		} else {
-		// 			console.log("new purchase", newPurchase);
-		// 			$scope.purchaseLog.push(newPurchase);
-		// 			$scope.updateProductData(newPurchase.args.id.toString(10), newPurchase.args.stock.toString(10));
-		// 			$scope.$apply();
-		// 		}
-		// 	});
-
-		// 	$scope.addProductRemovedWatcher = $scope.contract.LogRemovedProduct({}, {fromBlock: 0})
-		// 	.watch(function(err, removedProduct){
-		// 		if(err){
-		// 			console.log("error watching removed product", err);
-		// 		} else {
-		// 			console.log("product removed", removedProduct);
-		// 			console.log($scope);
-		// 			var index;
-		// 			$scope.formattedProducts.forEach(function(element, _index){
-		// 				if(element.id === removedProduct.args.id.toString(10)){
-		// 					index = _index;
-		// 				};
+		// 	mist.requestAccountPromise = function() {
+		// 		return new Promise (function(resolve, reject) {
+		// 			mist.requestAccount(function(e, accounts) {
+		// 				if(e != null) {
+		// 					reject(e);
+		// 				} else {
+		// 					resolve(accounts);
+		// 				}
 		// 			});
-		// 			console.log('index',index);
-		// 			console.log('removed product id',removedProduct.args.id.toString(10));
-		// 			$scope.productLog.splice(index, 1);
-		// 			$scope.formatProductData();
-		// 			$scope.$apply();
-		// 		}
+		// 		});
+		// 	};
+
+		// 	mist.requestBalancePromise = function(){
+		// 		return new Promise(function(resolve, reject) {
+		// 			web3.eth.getBalance(function(err, balance) {
+		// 				if(e != null) {
+		// 					reject(e);
+		// 				} else {
+		// 					resolve(balance);
+		// 				}
+		// 			});
+		// 		});
+		// 	};
+
+		// 	mist.requestAccountPromise().then((accounts) => {
+		// 		console.log(accounts);
+		// 		$scope.accounts = accounts;
+		// 		$scope.account = $scope.accounts[0];
+		// 		return mist.requestBalancePromise();
+		// 	}).then((balance) => {
+		// 		console.log(balance);
 		// 	})
-
-		// 	$scope.addAdminWatcher = $scope.contract.LogNewAdmin({}, {fromBlock: 0})
-		// 	.watch(function(err, newAdmin){
-		// 		if(err) {
-		// 			console.log("error watching purchase", err);
-		// 		} else {
-		// 			console.log("new admin", newAdmin);
-		// 			$scope.adminLog.push(newAdmin);
-		// 		}
-		// 	});
-
-		// 	return $scope.getOwnerStatus();
-		// });
+		// } else {
 
 
-		// work with first account
-		web3.eth.getAccounts(function(err, accs){
-			if(err != null){
-				alert("there was an error fetching your accounts.");
-				return;
-			}
-			if(accs.length == 0) {
-				alert("Couldn't find any accounts.");
-				return;
-			}
-			$scope.accounts = accs;
+		requestAccountPromise = function() {
+			return new Promise (function(resolve, reject) {
+				web3.eth.getAccounts(function(e, accounts) {
+					if(e != null) {
+						reject(e);
+					} else {
+						resolve(accounts);
+					}
+				});
+			});
+		};
+
+		requestBalancePromise = function(){
+			return new Promise(function(resolve, reject) {
+				web3.eth.getBalance($scope.account, function(e, balance) {
+					if(e != null) {
+						reject(e);
+					} else {
+						resolve(balance);
+					}
+				});
+			});
+		};
+
+		requestAccountPromise().then((accounts) => {
+			console.log(accounts);
+			$scope.accounts = accounts;
 			$scope.account = $scope.accounts[0];
-			$scope.balance = web3.getBalance($scope.account).toString(10);
-			console.log("using account", $scope.account);
-		});	
+			$scope.$apply();
+			return requestBalancePromise();
+		}).then((balance) => {
+			$scope.balance = balance;
+			$scope.$apply();
+		});				
+
 
 }]);

@@ -7,7 +7,8 @@ module.exports = {
   	"app.js": [
   		"js/_vendor/angular.min.js",
   		"js/app.js"
-  	]
+  	],
+    "bundle.js":"bundle.js"
   }),
   networks: {
     development: {

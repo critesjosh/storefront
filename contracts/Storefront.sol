@@ -1,12 +1,10 @@
 pragma solidity ^0.4.6;
 
-import './Ownable.sol';
 import './PullPayment.sol';
-import './SafeMath.sol';
 import './Administrable.sol';
 import './Stoppable.sol';
 
-contract Storefront is Ownable, Administrable, PullPayment, Stoppable {
+contract Storefront is Administrable, PullPayment, Stoppable {
 	using SafeMath for uint256;
 
 	struct Product {
@@ -35,14 +33,15 @@ contract Storefront is Ownable, Administrable, PullPayment, Stoppable {
 	}
 
 	function addProduct(uint price, uint stock, uint id)
-		isAdmin
+		//isAdmin
 		public
 		returns(bool success)
 	{
-		require(products[id].price == 0); //make sure a product with this id has not been created
 		require(price > 0);
 		require(stock >= 0);
-		products[id] = Product(price, stock, msg.sender);
+		uint length = getProductsLength();
+		productLocation[id] = length;
+		products.push(Product(price, stock, msg.sender));
 		LogAddProduct(id, msg.sender, price, stock);
 		return true;
 	}
@@ -52,16 +51,17 @@ contract Storefront is Ownable, Administrable, PullPayment, Stoppable {
 		payable
 		returns(bool success)
 	{
-		require(products[id].stock >= quantity);
-		uint totalCost = products[id].price.mul(quantity);
+		uint index = productLocation[id];
+		require(products[index].stock >= quantity);
+		uint totalCost = products[index].price.mul(quantity);
 		require(msg.value >= totalCost);
 
 		uint amountToReturn = msg.value.sub(totalCost);
 		PullPayment.asyncSend(this, totalCost); 
 
-		products[id].stock -= quantity;
+		products[index].stock -= quantity;
 		msg.sender.transfer(amountToReturn); //return any overpayment
-		LogPurchase(msg.sender, id, products[id].price, quantity, products[id].stock);
+		LogPurchase(msg.sender, id, products[index].price, quantity, products[index].stock);
 		return true;
 	}
 
@@ -72,10 +72,11 @@ contract Storefront is Ownable, Administrable, PullPayment, Stoppable {
 		isAdmin
 		returns(bool success)
 	{
-		// remove a prodcut from the list
-		require(products[id].price != 0 && products[id].stock != 0); // make sure the prodcut has been added
-		uint stock = products[id].stock;
-		uint price = products[id].price;
+		// remove a product from the list
+		uint index = productLocation[id];
+		require(products[index].price != 0 && products[index].stock != 0); // make sure the prodcut has been added
+		uint stock = products[index].stock;
+		uint price = products[index].price;
 		address manager = products[id].manager;
 		products[id] = Product(0,0,0);  // set to the uninitialized state
 		LogRemovedProduct(id, manager, price, stock);
@@ -84,6 +85,7 @@ contract Storefront is Ownable, Administrable, PullPayment, Stoppable {
 
 	function coPurchase()
 		public
+		//isConfirmed
 		returns(bool success)
 	{
 		//purchase something with another person

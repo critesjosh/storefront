@@ -45,8 +45,18 @@
       "links": {},
       "address": "0x3aee4b83f7d8afbd771f0da38f5f32cb32a5cacc",
       "updated_at": 1504310314777
+    },
+    "1504356407814": {
+      "events": {},
+      "links": {},
+      "address": "0xd2d81550f0df87096e18f6b2a580a640d3dab4b0",
+      "updated_at": 1504356706842
     }
   },
   "schema_version": "0.0.5",
+<<<<<<< Updated upstream
   "updated_at": 1504640471297
+=======
+  "updated_at": 1504356706842
+>>>>>>> Stashed changes
 }

@@ -8,8 +8,18 @@
       "links": {},
       "address": "0xae8b32ee120c4775413c0014969bc83fb244da69",
       "updated_at": 1504310314781
+    },
+    "1504356407814": {
+      "events": {},
+      "links": {},
+      "address": "0xcef091d8f0fa207248f26068c1149ec2de12b567",
+      "updated_at": 1504356706841
     }
   },
   "schema_version": "0.0.5",
+<<<<<<< Updated upstream
   "updated_at": 1504640471298
+=======
+  "updated_at": 1504356706841
+>>>>>>> Stashed changes
 }
