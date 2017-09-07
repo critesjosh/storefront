@@ -49,8 +49,8 @@
 
         <form ng-submit="editStore()">
         	<select name="store" ng-model="editStoreSelected" required>
-        		<option ng-repeat="store in stores" value="{{ store.args.storefrontAddress }}">
-        		{{ store.args.storefrontAddress }}
+        		<option ng-repeat="store in stores" value="{{ store.store }}">
+        		{{ store.store }}
         		</option>
         	</select>
         	<input type="submit" class="btn btn-primary" value="Select Storefront">

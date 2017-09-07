@@ -23,14 +23,15 @@ app.controller("storefrontController",
 	  	});
 
 	  	txn = {};
-	  	$scope.stores = [];      // array of store structs
-	  	$scope.storeIndex = {};  // row pointers
+	  	$scope.stores       = [];      // array of store structs
+	  	$scope.storeIndex   = {};  // row pointers
 	  	$scope.storeSelected;
-	  	$scope.storeLog = [];    // verbose on-screen display of logs
+	  	$scope.storeLog     = [];    // verbose on-screen display of logs
 
-	  	$scope.product = {};
-	  	$scope.productList = [];
-	  	$scope.productLog  = [];
+	  	$scope.product      = {};
+	  	$scope.productIndex = {};
+	  	$scope.productList  = [];
+	  	$scope.productLog   = [];
 
 	  	$scope.setAccount = function(){
 	  		$scope.account = $scope.accountSelected;
@@ -39,36 +40,29 @@ app.controller("storefrontController",
 	  			$scope.balance = balance;
 	  			$scope.$apply();
 	  		});
-	  		var numberOfStores = $scope.stores.length;
-
-	  		// update UI options based on the account selected
-	  		// manage stores for which this accound is the owner
-
-	  		// display all of the stores they manage/ show add/remove product options
-
 	  		console.log("Using account:", $scope.account);
 	  	}
 
 	  	$scope.newStore = function(){
-	  		return hub.createStore({from: $scope.account})
+	  		return hub.createStore({from: $scope.account, gas: 900000})
 	  		.then(function(txn) {
 	  			console.log('store created: txn', txn);
+	  			return;
 	  		});
 	  	};
 
 	  	$scope.addProduct = function(){
+	  		var storeAddress = $scope.editStoreSelected;
 	  		var store = Storefront.at($scope.editStoreSelected);
 			var price = parseInt($scope.product.price);
 			var stock = parseInt($scope.product.quantity);
 			var id = Date.now(); // anything unique
-			$scope.product.price = 0;
-			$scope.product.quantity = 0;
+			$scope.product.price = "";
+			$scope.product.quantity = "";
 			if(parseInt(price) <= 0){ alert("Please enter a valid product price"); return;}
 			if(parseInt(stock) < 0){ alert("Please enter an item stock quantity greater than 0."); return;}
 
-			console.log($scope.editStoreSelected);
-
-			return store.addProduct(price, stock, id, {from:$scope.account, gas: 900000})
+			return store.addProduct(price, stock, id, storeAddress, {from:$scope.account, gas: 900000})
 			 .then(function(txn){
 			 	console.log("product added !! txn receipt", txn);
 			 	return;
@@ -78,7 +72,6 @@ app.controller("storefrontController",
 	  	$scope.shopAtStore = function() {
 	  		var store = Storefront.at($scope.shopStoreSelected);
 	  		console.log(store);
-
 	  	};
 
 	  	function watchForNewStores() {
@@ -90,9 +83,9 @@ app.controller("storefrontController",
 	  				console.log("New store:", newStore);
 	  				if(typeof(txn[newStore.transactionHash]) == 'undefined') {
 	  					$scope.storeLog.push(newStore);
-	  					$scope.stores.push(newStore);
 	  					txn[newStore.transactionHash] = true;
 	  					upsertStore(newStore.args.storefrontAddress);
+	  					$scope.$apply();
 	  				}
 	  			}
 	  		});
@@ -107,8 +100,11 @@ app.controller("storefrontController",
 	  				console.log('product watcher error', err);
 	  			} else {
 	  				console.log('New Product', newProduct);
+	  				var index = $scope.productList.length;
 	  				$scope.productList.push(newProduct.args);
+	  				$scope.productIndex[newProduct.args.id.toString(10)] = index;
 	  				upsertStore(storefrontAddress);
+	  				$scope.$apply();
 	  			}
 	  		});
 	  	};
@@ -123,25 +119,20 @@ app.controller("storefrontController",
 
 	  		return store.running.call({from: $scope.account})
 	  		.then(function(isRunning){
-	  			console.log(isRunning);
 	  			running = isRunning;
-	  			return store.getProductArrayLength.call();
-	  		})
-	  		.then(function(number){
-	  			console.log(number.toString(10));
 
 		  		var s = {};
 		  		s.store = address;
 		  		s.running = running;
 
-		  		if(typeof($scope.storeIndex[address] === 'undefined')){
+		  		if(typeof($scope.storeIndex[address]) == 'undefined'){
 		          	$scope.storeIndex[s.store] = $scope.stores.length;
 		          	$scope.stores.push(s);
 		          	var addProductWatcher = watchForNewProducts(address);
 		          	$scope.$apply();
 		  		} else {
 		  			var index = $scope.storeIndex[s.store];
-		  			$scope.store[index].running = s.running;
+		  			$scope.stores[index].running = s.running;
 		  			$scope.$apply();
 		  		}
 
