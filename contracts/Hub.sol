@@ -22,14 +22,14 @@ contract Hub is Stoppable {
 		constant
 		returns(uint storeCount)
 	{
-		return stores.length;
+		return (stores.length);
 	}
 
 	function createStore()
 		public
 		returns(address storefrontContract)
 	{
-		Storefront trustedStorefront = new Storefront();
+		Storefront trustedStorefront = new Storefront(msg.sender);
 		stores.push(trustedStorefront);
 		storeExists[trustedStorefront] = true;
 		LogNewStorefront(trustedStorefront, msg.sender);

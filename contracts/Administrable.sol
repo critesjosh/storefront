@@ -14,8 +14,8 @@ contract Administrable is Ownable {
 		_;
 	}
 
-	function Administrable(){
-		admins[msg.sender] = true;
+	function Administrable(address creator){
+		admins[creator] = true;
 	}
 
 	function getUserIsAdmin()

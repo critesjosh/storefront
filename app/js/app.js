@@ -62,7 +62,7 @@ app.controller("storefrontController",
 			if(parseInt(price) <= 0){ alert("Please enter a valid product price"); return;}
 			if(parseInt(stock) < 0){ alert("Please enter an item stock quantity greater than 0."); return;}
 
-			return store.addProduct(price, stock, id, storeAddress, {from:$scope.account, gas: 900000})
+			return store.addProduct(price, stock, id, {from:$scope.account, gas: 900000})
 			 .then(function(txn){
 			 	console.log("product added !! txn receipt", txn);
 			 	return;

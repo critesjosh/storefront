@@ -21,15 +21,16 @@ contract Storefront is Administrable, PullPayment, Stoppable {
 	event LogPurchase(address purchaser, uint id, uint price, uint quantity, uint stock);
 
 	//constructor
-	function Storefront(){
+	function Storefront(address creator) Administrable(creator){
+		manager = creator;
 	}
 
-	function getProductArrayLength()
-		constant
+	function getProductCount()
 		public
-		returns(uint)
+		constant
+		returns(uint productCount)
 	{
-		return productIds.length;
+		return (productIds.length);
 	}
 
 	function getProduct(uint id)
@@ -40,12 +41,12 @@ contract Storefront is Administrable, PullPayment, Stoppable {
 		return(products[id].price, products[id].stock);
 	}
 
-	function addProduct(uint price, uint stock, uint id)
-		//isAdmin
+	function addProduct(uint id, uint price, uint stock)
+		isAdmin
 		public
 		returns(bool success)
 	{
-		//require(products[id].price == 0);
+		require(products[id].price == 0);
 		require(price > 0);
 		require(stock >= 0);
 		products[id] = Product(price, stock);
